@@ -1,0 +1,26 @@
+{
+  "name": "@genoffice/reference-host",
+  "version": "0.1.0",
+  "license": "Apache-2.0",
+  "private": true,
+  "type": "module",
+  "description": "Reference host app for the GenOffice editor service. Vite + React + minimal Express backend. Integrators copy this pattern; it is documentation-as-code, not a product.",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "dev": "tsx watch src/server/index.ts",
+    "start": "node dist/server/index.js"
+  },
+  "dependencies": {
+    "@genoffice/editor-contract": "*",
+    "@genoffice/sdk-shared": "*",
+    "@hono/node-server": "^1.13.7",
+    "hono": "^4.6.14"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.10"
+  }
+}

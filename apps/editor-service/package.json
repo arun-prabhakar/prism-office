@@ -1,0 +1,33 @@
+{
+  "name": "@genoffice/editor-service",
+  "version": "0.1.0",
+  "license": "Apache-2.0",
+  "private": true,
+  "type": "module",
+  "description": "Self-hosted GenOffice embeddable editor service. Stateless proxy + static host for the docs/pdf editor SPAs. Customer deploys this Docker container; their host app embeds via the JS SDK.",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "build:sdk": "node build-sdk.mjs",
+    "build": "npm run build:sdk && tsc",
+    "dev": "tsx watch src/server/index.ts",
+    "start": "node dist/server/index.js"
+  },
+  "dependencies": {
+    "@genoffice/editor-contract": "*",
+    "@hono/node-server": "^1.13.7",
+    "hono": "^4.6.14"
+  },
+  "devDependencies": {
+    "@embedpdf/pdfium": "*",
+    "@genoffice/sdk-shared": "*",
+    "@types/node": "^24.10.1",
+    "esbuild": "^0.24.0",
+    "jszip": "^3.10.1",
+    "pdf-lib": "^1.17.1",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.10"
+  }
+}

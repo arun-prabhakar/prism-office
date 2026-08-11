@@ -1,0 +1,26 @@
+{
+  "name": "@genoffice/web-runtime",
+  "version": "0.1.0",
+  "license": "Apache-2.0",
+  "private": true,
+  "type": "module",
+  "description": "Browser-side implementations of the docs/pdf renderer API surfaces (DesktopApi / PdfApi) backed by the editor service HTTP routes + browser APIs (FSAccess, IndexedDB).",
+  "exports": {
+    ".": "./src/index.ts",
+    "./docs": "./src/docs-api.ts",
+    "./storage": "./src/storage.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@genoffice/docs": "*",
+    "@genoffice/editor-contract": "*",
+    "@genoffice/pdf": "*"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.0"
+  }
+}

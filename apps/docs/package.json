@@ -6,10 +6,14 @@
   "private": true,
   "description": "AI-native streaming docx editor with paragraph-patch save",
   "main": "out/main/index.js",
+  "exports": {
+    "./shared/ipc": "./src/shared/ipc.ts"
+  },
   "scripts": {
     "dev": "electron-vite dev",
     "dev:renderer": "vite --config vite.renderer.config.ts",
     "build": "electron-vite build",
+    "build:web": "vite build --config vite.web.config.ts",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -23,9 +27,12 @@
     "@genoffice/ai-provider": "*",
     "@genoffice/ai-search": "*",
     "@genoffice/docx-engine": "*",
+    "@genoffice/editor-contract": "*",
     "@genoffice/file-parse": "*",
     "@genoffice/project-store": "*",
+    "@genoffice/sdk-shared": "*",
     "@genoffice/ui": "*",
+    "@genoffice/web-runtime": "*",
     "@tiptap/core": "^3.28.0",
     "@tiptap/extensions": "^3.28.0",
     "@tiptap/pm": "^3.28.0",

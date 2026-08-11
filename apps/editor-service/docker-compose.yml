@@ -1,0 +1,28 @@
+# Phase 1 dev compose — editor service + reference host side-by-side.
+# Secrets are dev defaults; override for any non-local deployment.
+
+services:
+  editor-service:
+    build:
+      context: ..
+      dockerfile: apps/editor-service/Dockerfile
+    ports:
+      - '3000:3000'
+    environment:
+      GENOFFICE_BROWSER_SECRET: dev-browser-secret
+      GENOFFICE_OUTBOX_SECRET: dev-outbox-secret
+      PORT: '3000'
+
+  reference-host:
+    build:
+      context: ..
+      dockerfile: apps/reference-host/Dockerfile
+    ports:
+      - '3001:3001'
+    environment:
+      GENOFFICE_BROWSER_SECRET: dev-browser-secret
+      GENOFFICE_OUTBOX_SECRET: dev-outbox-secret
+      EDITOR_SERVICE_URL: http://editor-service:3000
+      PORT: '3001'
+    depends_on:
+      - editor-service
