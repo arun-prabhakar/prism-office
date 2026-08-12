@@ -29,6 +29,7 @@ import type {
   PdfApi,
   SavePdfRequest,
   SavePdfResult,
+  StaticFormFillRecord,
   TextEditFailure,
   TextEditInput,
   TextEditValidation,
@@ -146,6 +147,9 @@ export function createPdfApi(opts: PdfWebRuntimeOpts): PdfApi {
       return []
     },
     async listPageImages(_path: string): Promise<PageImageRef[]> {
+      return []
+    },
+    async listStaticFormFills(_path: string): Promise<StaticFormFillRecord[]> {
       return []
     },
     async pageImagePng(_request: {

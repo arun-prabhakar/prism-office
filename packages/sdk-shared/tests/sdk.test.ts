@@ -245,9 +245,9 @@ describe('DocEditor', () => {
     editor.destroyEditor()
   })
 
-  it('registers window.GenOfficeAPI on import', () => {
+  it('registers window.PrismOfficeAPI on import', () => {
     // Static import already ran the module's global-registration side effect.
-    expect(window.GenOfficeAPI).toBeDefined()
-    expect(window.GenOfficeAPI?.DocEditor).toBe(DocEditor)
+    expect(window.PrismOfficeAPI).toBeDefined()
+    expect(window.PrismOfficeAPI?.DocEditor).toBe(DocEditor)
   })
 })

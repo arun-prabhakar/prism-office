@@ -87,6 +87,9 @@ export function createDesktopApi(opts: WebRuntimeOpts): DesktopApi {
     async getEditorMode() {
       return editorMode
     },
+    async fontMetrics(_family: string) {
+      return null
+    },
 
     // -------------------------------------------------------------------------
     // File open — FSAccess picker; no host-side path concept, so we use the
