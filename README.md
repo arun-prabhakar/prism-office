@@ -6,7 +6,7 @@
 
 **Self-hosted, embeddable document editor for the web.**
 
-[![License: Apache-2.0](LICENSE)](LICENSE)
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 
 PrismOffice is a document editor you run on your own infrastructure and embed
 into your web application via an iframe + JavaScript SDK — the same deployment
