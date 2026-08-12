@@ -33,3 +33,6 @@ electron-builder.env
 __pycache__/
 /notes/
 /MEMORY.md
+
+# Agent session/planning state — kept local, not tracked
+/.omo/
