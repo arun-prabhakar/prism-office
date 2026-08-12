@@ -31,8 +31,8 @@ function bootEditorService(): Proc {
     env: {
       ...process.env,
       PORT: '4100',
-      GENOFFICE_BROWSER_SECRET: 'e2e-browser-secret',
-      GENOFFICE_OUTBOX_SECRET: 'e2e-outbox-secret',
+      PRISMOFFICE_BROWSER_SECRET: 'e2e-browser-secret',
+      PRISMOFFICE_OUTBOX_SECRET: 'e2e-outbox-secret',
     },
     script: 'src/server.ts',
   })
@@ -44,8 +44,8 @@ function bootReferenceHost(editorPort: number): Proc {
     env: {
       ...process.env,
       PORT: '4101',
-      GENOFFICE_BROWSER_SECRET: 'e2e-browser-secret',
-      GENOFFICE_OUTBOX_SECRET: 'e2e-outbox-secret',
+      PRISMOFFICE_BROWSER_SECRET: 'e2e-browser-secret',
+      PRISMOFFICE_OUTBOX_SECRET: 'e2e-outbox-secret',
       EDITOR_SERVICE_URL: `http://localhost:${editorPort}`,
     },
     script: '../reference-host/src/server.ts',
@@ -114,14 +114,14 @@ describe.skipIf(process.env.SKIP_E2E === '1')('Phase 1 end-to-end wiring', () =>
     const r = await fetch(`http://localhost:${host!.port}/docs`)
     expect(r.status).toBe(200)
     const html = await r.text()
-    expect(html).toContain('GenOfficeAPI.DocEditor')
+    expect(html).toContain('PrismOfficeAPI.DocEditor')
   })
 
   it('serves the SDK bundle at /sdk/genoffice.js', async () => {
     const r = await fetch(`http://localhost:${editor!.port}/sdk/genoffice.js`)
     expect(r.status).toBe(200)
     const js = await r.text()
-    expect(js).toContain('GenOfficeAPI')
+    expect(js).toContain('PrismOfficeAPI')
     expect(js).toContain('DocEditor')
   })
 

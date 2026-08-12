@@ -69,8 +69,8 @@ describe.skipIf(process.env.SKIP_E2E === '1')('Phase 2: byte preservation', () =
       env: {
         ...process.env,
         PORT: '4200',
-        GENOFFICE_BROWSER_SECRET: 'e2e-browser-secret',
-        GENOFFICE_OUTBOX_SECRET: 'e2e-outbox-secret',
+        PRISMOFFICE_BROWSER_SECRET: 'e2e-browser-secret',
+        PRISMOFFICE_OUTBOX_SECRET: 'e2e-outbox-secret',
       },
       script: 'src/server.ts',
     })
@@ -80,8 +80,8 @@ describe.skipIf(process.env.SKIP_E2E === '1')('Phase 2: byte preservation', () =
       env: {
         ...process.env,
         PORT: '4201',
-        GENOFFICE_BROWSER_SECRET: 'e2e-browser-secret',
-        GENOFFICE_OUTBOX_SECRET: 'e2e-outbox-secret',
+        PRISMOFFICE_BROWSER_SECRET: 'e2e-browser-secret',
+        PRISMOFFICE_OUTBOX_SECRET: 'e2e-outbox-secret',
         EDITOR_SERVICE_URL: 'http://localhost:4200',
       },
       script: '../reference-host/src/server.ts',
