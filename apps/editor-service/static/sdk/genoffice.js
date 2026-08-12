@@ -1,4 +1,4 @@
-/* GenOffice editor SDK — bundle of @genoffice/sdk-shared. Registers window.GenOfficeAPI. */
+/* PrismOffice editor SDK — bundle of @genoffice/sdk-shared. Registers window.PrismOfficeAPI. */
 "use strict";
 (() => {
   // ../../packages/sdk-shared/src/postmessage-protocol.ts
@@ -275,6 +275,6 @@
     return window.location.origin;
   }
   if (typeof window !== "undefined") {
-    window.GenOfficeAPI = { DocEditor };
+    window.PrismOfficeAPI = { DocEditor };
   }
 })();

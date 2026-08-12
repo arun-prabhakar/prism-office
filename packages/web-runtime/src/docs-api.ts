@@ -55,6 +55,8 @@ export function createDesktopApi(opts: WebRuntimeOpts): DesktopApi {
     })
 
   const lang = (config.editorConfig?.lang as Lang | undefined) ?? 'en'
+  const editorMode = (config.editorConfig?.mode ?? 'edit') as 'edit' | 'view'
+  const theme = ((config.editorConfig as any)?.customization?.uiTheme ?? 'light') as UiTheme
   const aiSettings: AiSettings = {
     provider: (config.editorConfig?.customization?.ai?.model as AiSettings['provider']) ?? 'claude',
   } as AiSettings
@@ -77,10 +79,13 @@ export function createDesktopApi(opts: WebRuntimeOpts): DesktopApi {
       return () => {}
     },
     async getTheme() {
-      return 'system' as UiTheme
+      return theme
     },
     onThemeChanged() {
       return () => {}
+    },
+    async getEditorMode() {
+      return editorMode
     },
 
     // -------------------------------------------------------------------------
@@ -116,14 +121,15 @@ export function createDesktopApi(opts: WebRuntimeOpts): DesktopApi {
           body: JSON.stringify({ config: sanitizedConfigForSave(config) }),
         })
         if (!res.ok) {
+          const errBody = await res.json().catch(() => null)
           postSdkEvent('onError', {
-            errorCode: -1,
-            errorDescription: `fetch-document ${res.status}`,
+            errorCode: res.status,
+            errorDescription: errBody?.error || `fetch-document ${res.status}`,
           })
           return null
         }
         const data = await res.arrayBuffer()
-        const hash = res.headers.get('X-GenOffice-Hash') ?? ''
+        const hash = res.headers.get('X-PrismOffice-Hash') ?? ''
         postSdkEvent('onDocumentReady')
         postSdkEvent('onDocumentStateChange', false)
         return {
@@ -574,8 +580,7 @@ function bytesToBase64(bytes: Uint8Array): string {
 }
 
 async function sha256Hex(bytes: Uint8Array): Promise<string> {
-  // Copy into a fresh ArrayBuffer — TS 5.7+'s generic Uint8Array can carry
-  // a SharedArrayBuffer which SubtleCrypto rejects.
+  if (!crypto?.subtle) return ''
   const buf = new ArrayBuffer(bytes.byteLength)
   new Uint8Array(buf).set(bytes)
   const digest = await crypto.subtle.digest('SHA-256', buf)

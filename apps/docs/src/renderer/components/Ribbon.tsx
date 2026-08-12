@@ -126,6 +126,7 @@ interface RibbonProps {
   onSaveAs: () => void
   showAi: boolean
   onToggleAi: () => void
+  aiAvailable?: boolean
   section: SectionSettings | null
   onSection: (next: SectionSettings) => void
   /** Multi-section documents: index of the cursor's section (0-based); null for single-section */
@@ -593,6 +594,7 @@ function RibbonInner({
   onSaveAs,
   showAi,
   onToggleAi,
+  aiAvailable = true,
   section,
   onSection,
   activeSection,
@@ -2029,6 +2031,8 @@ function RibbonInner({
         ) : tab === 'home' ? (
           <>
             {/* ---- Genspark AI (first slot: entry + one-click AI actions) ---- */}
+            {aiAvailable && (
+            <>
             <div className="ribbon-group">
               <div className="ribbon-group-items">
                 <button
@@ -2137,6 +2141,8 @@ function RibbonInner({
             </div>
 
             <div className="ribbon-sep" />
+            </>
+            )}
 
             {/* ---- Clipboard ---- */}
             <div className="ribbon-group">

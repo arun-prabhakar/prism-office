@@ -1,5 +1,5 @@
 /**
- * GenOffice editor service — Hono server entry.
+ * PrismOffice editor service — Hono server entry.
  *
  * Routes:
  *   GET  /health                  — readiness probe
@@ -114,10 +114,23 @@ app.post('/fetch-document', async (c) => {
   }
   const bytes = new Uint8Array(await upstream.arrayBuffer())
   const filetype = verified.document.fileType ?? ''
+
+  const isPdfMagic = bytes.length >= 4 && bytes[0] === 0x25 && bytes[1] === 0x50 && bytes[2] === 0x44 && bytes[3] === 0x46
+  const isZipMagic = bytes.length >= 2 && bytes[0] === 0x50 && bytes[1] === 0x4b
+  const expectedPdf = filetype === 'pdf'
+  const formatOk = expectedPdf ? isPdfMagic : isZipMagic
+  if (!formatOk) {
+    const got = isPdfMagic ? 'PDF' : isZipMagic ? 'ZIP/docx' : 'unknown'
+    return c.json(
+      { error: `invalid file format: expected ${expectedPdf ? 'PDF' : 'docx (ZIP)'} but the file appears to be ${got}` },
+      415,
+    )
+  }
+
   const hashBuf = await crypto.subtle.digest('SHA-256', bytes)
   const hashHex = Array.from(new Uint8Array(hashBuf)).map((b) => b.toString(16).padStart(2, '0')).join('')
-  c.header('X-GenOffice-File-Type', filetype)
-  c.header('X-GenOffice-Hash', hashHex)
+  c.header('X-PrismOffice-File-Type', filetype)
+  c.header('X-PrismOffice-Hash', hashHex)
   c.header('Content-Type', 'application/octet-stream')
   c.header('Content-Length', String(bytes.byteLength))
   return c.body(bytes.buffer as ArrayBuffer)
@@ -289,7 +302,7 @@ function base64Decode(s: string): Uint8Array {
 // -------------------------------------------------------------------------
 
 serve({ fetch: app.fetch, port: config.port, hostname: '0.0.0.0' }, (info) => {
-  console.log(`genoffice editor-service listening on 0.0.0.0:${info.port}`)
+  console.log(`prismoffice editor-service listening on 0.0.0.0:${info.port}`)
   console.log(`  open: http://<your-server-ip>:${info.port}/health`)
 })
 

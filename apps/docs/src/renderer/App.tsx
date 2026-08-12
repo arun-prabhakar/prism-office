@@ -304,7 +304,7 @@ export function App() {
   const bootHandledRef = useRef(false)
   const [_recent, setRecent] = useState<string[]>([])
   const [settings, setSettings] = useState<AiSettings>(DEFAULT_SETTINGS)
-  const [showAi, setShowAi] = useState(() => localStorage.getItem('aidocs.showAi') !== '0')
+  const [showAi, setShowAi] = useState(() => aiAvailable && localStorage.getItem('aidocs.showAi') !== '0')
   /** Increments on every open/new document: AiPanel remounts by key to reset the conversation and history (save path changes don't bump it, so the session continues) */
   const [aiPanelKey, setAiPanelKey] = useState(0)
   const [ribbonTabRequest, setRibbonTabRequest] = useState<{ tab: string; nonce: number } | null>(
@@ -484,6 +484,8 @@ export function App() {
   const [showNav, setShowNav] = useState(false)
   const [viewMode, setViewMode] = useState<ViewMode>('print')
   const [readMode, setReadMode] = useState(false)
+  const [viewModeLocked, setViewModeLocked] = useState(false)
+  const aiAvailable = typeof window.desktop.getEditorMode !== 'function'
   const [showGrid, setShowGrid] = useState(false)
   const [splitView, setSplitView] = useState(false)
   const [showPagePreview, setShowPagePreview] = useState(false)
@@ -681,6 +683,7 @@ export function App() {
   useEffect(() => {
     void window.desktop.getRecentFiles().then(setRecent)
     void window.desktop.getAiSettings().then(setSettings)
+    void window.desktop.getEditorMode?.().then((m) => { if (m === 'view') { setReadMode(true); setViewModeLocked(true) } })
   }, [])
 
   useEffect(() => {
@@ -727,7 +730,7 @@ export function App() {
 
   // window title follows the document, so the OS window list and Switch Window show file names
   useEffect(() => {
-    document.title = doc ? doc.fileName : 'GenOffice Docs'
+    document.title = doc ? doc.fileName : 'PrismOffice Docs'
   }, [doc])
 
   useEffect(() => window.desktop.onTeardown?.(() => setTornDown(true)), [])
@@ -2759,6 +2762,7 @@ export function App() {
         styles={ribbonStyles}
         docDefaults={doc?.parsed.docDefaults}
         showAi={showAi}
+        aiAvailable={aiAvailable}
         section={sections[activeSection]?.settings ?? section}
         activeSection={sections.length > 1 ? activeSection : null}
         pageColor={pageColor}
@@ -2795,7 +2799,7 @@ export function App() {
       />
 
       <div className="app-main">
-        {doc && (
+        {doc && aiAvailable && (
           <div className={`ai-dock${showAi ? '' : ' collapsed'}`}>
             {/* always mounted: collapse must not drop state or in-flight runs */}
             <AiPanel
@@ -3023,7 +3027,7 @@ export function App() {
                 </div>
               )}
             </div>
-            {readMode && (
+            {readMode && !viewModeLocked && (
               <button className="read-exit" onClick={() => setReadMode(false)}>
                 {t('appExitReadMode')}
               </button>

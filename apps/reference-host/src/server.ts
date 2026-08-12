@@ -55,7 +55,7 @@ async function seedFixture(): Promise<void> {
   const doc = await PDFDocument.create()
   const page = doc.addPage([595, 842])
   const font = await doc.embedFont(StandardFonts.Helvetica)
-  page.drawText('GenOffice PDF Editor — Web Port', {
+  page.drawText('PrismOffice PDF Editor — Web Port', {
     x: 50,
     y: 750,
     size: 18,
@@ -90,15 +90,37 @@ app.get('/open', async (c) => {
   const url = c.req.query('url')
   if (!url) return c.text('Missing ?url= parameter. Example: /open?url=https://example.com/doc.docx', 400)
   const type = (c.req.query('type') ?? 'word') as 'word' | 'pdf'
+  const mode = (c.req.query('mode') ?? 'edit') as 'edit' | 'view'
+  const theme = c.req.query('theme') ?? 'light'
   const fileType = type === 'pdf' ? 'pdf' : 'docx'
   const title = decodeURIComponent(url.split('/').pop()?.split('?')[0] ?? 'document')
   const ho = hostOrigin(c)
+
+  try {
+    const controller = new AbortController()
+    const to = setTimeout(() => controller.abort(), 10_000)
+    const probe = await fetch(url, { method: 'HEAD', signal: controller.signal })
+    clearTimeout(to)
+    if (!probe.ok && probe.status !== 405) {
+      return c.html(renderErrorPage(title, url, `HTTP ${probe.status}${probe.statusText ? ' ' + probe.statusText : ''}`))
+    }
+    const ct = probe.headers.get('content-type') ?? ''
+    if (ct && /^(text\/|image\/|video\/|audio\/)/.test(ct)) {
+      return c.html(renderErrorPage(title, url, `Expected a .${fileType} file but got ${ct}`))
+    }
+  } catch (e) {
+    const msg = (e as Error).name === 'AbortError'
+      ? 'Timed out (10s)'
+      : (e as Error).message
+    return c.html(renderErrorPage(title, url, msg))
+  }
+
   const fileKey = 'ext-' + Date.now()
   const token = await signConfig(
     {
       documentType: type,
       document: { key: fileKey, url, fileType, title },
-      editorConfig: { mode: 'edit', callbackUrl: `${ho}/track`, user: { id: 'alice', name: 'Alice' } },
+      editorConfig: { mode, callbackUrl: `${ho}/track`, user: { id: 'alice', name: 'Alice' }, customization: { uiTheme: theme } },
     },
     browserSecret,
   )
@@ -112,6 +134,8 @@ app.get('/open', async (c) => {
       fileType,
       title,
       documentUrl: url,
+      mode,
+      theme,
     }),
   )
 })
@@ -163,6 +187,8 @@ app.get('/files/:id/edit', async (c) => {
 })
 
 app.get('/docs', async (c) => {
+  const mode = (c.req.query('mode') ?? 'edit') as 'edit' | 'view'
+  const theme = c.req.query('theme') ?? 'light'
   const ho = hostOrigin(c)
   const token = await signConfig(
     {
@@ -174,9 +200,10 @@ app.get('/docs', async (c) => {
         title: 'simple.docx',
       },
       editorConfig: {
-        mode: 'edit',
+        mode,
         callbackUrl: `${ho}/track`,
         user: { id: 'alice', name: 'Alice' },
+        customization: { uiTheme: theme },
       },
     },
     browserSecret,
@@ -190,11 +217,15 @@ app.get('/docs', async (c) => {
       fileId: 'fixture',
       fileType: 'docx',
       title: 'simple.docx',
+      mode,
+      theme,
     }),
   )
 })
 
 app.get('/pdf', async (c) => {
+  const mode = (c.req.query('mode') ?? 'edit') as 'edit' | 'view'
+  const theme = c.req.query('theme') ?? 'light'
   const ho = hostOrigin(c)
   const token = await signConfig(
     {
@@ -206,9 +237,10 @@ app.get('/pdf', async (c) => {
         title: 'phase3.pdf',
       },
       editorConfig: {
-        mode: 'edit',
+        mode,
         callbackUrl: `${ho}/track`,
         user: { id: 'alice', name: 'Alice' },
+        customization: { uiTheme: theme },
       },
     },
     browserSecret,
@@ -222,6 +254,8 @@ app.get('/pdf', async (c) => {
       fileId: 'fixture-pdf',
       fileType: 'pdf',
       title: 'phase3.pdf',
+      mode,
+      theme,
     }),
   )
 })
@@ -338,7 +372,7 @@ app.use('/static/*', serveStatic({ root: './static' }))
 // -------------------------------------------------------------------------
 
 serve({ fetch: app.fetch, port, hostname: '0.0.0.0' }, (info) => {
-  console.log(`genoffice reference-host listening on 0.0.0.0:${info.port}`)
+  console.log(`prismoffice reference-host listening on 0.0.0.0:${info.port}`)
   console.log(`  editor service port: ${editorServicePort}`)
   console.log(`  open: http://<your-server-ip>:${info.port}/`)
 })
@@ -348,7 +382,7 @@ function renderLandingPage(editorServiceOrigin: string): string {
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>GenOffice Reference Host</title>
+  <title>PrismOffice Reference Host</title>
   <style>
     * { box-sizing: border-box; }
     body { margin: 0; font: 14px/1.6 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f7f7f7; color: #111; }
@@ -370,18 +404,28 @@ function renderLandingPage(editorServiceOrigin: string): string {
 </head>
 <body>
   <div class="container">
-    <h1>GenOffice Editor</h1>
+    <h1>PrismOffice Editor</h1>
     <p class="sub">Self-hosted document editor</p>
     <div class="editors">
       <a class="card" href="/docs">
         <div class="icon">📄</div>
         <div class="name">Sample Doc</div>
-        <div class="desc">.docx fixture</div>
+        <div class="desc">.docx — edit</div>
+      </a>
+      <a class="card" href="/docs?mode=view">
+        <div class="icon">👁</div>
+        <div class="name">Sample Doc</div>
+        <div class="desc">.docx — view</div>
       </a>
       <a class="card" href="/pdf">
         <div class="icon">📋</div>
         <div class="name">Sample PDF</div>
-        <div class="desc">.pdf fixture</div>
+        <div class="desc">.pdf — edit</div>
+      </a>
+      <a class="card" href="/pdf?mode=view">
+        <div class="icon">👁</div>
+        <div class="name">Sample PDF</div>
+        <div class="desc">.pdf — view</div>
       </a>
     </div>
     <form class="upload" method="POST" action="/upload" enctype="multipart/form-data">
@@ -396,6 +440,40 @@ function renderLandingPage(editorServiceOrigin: string): string {
 </html>`
 }
 
+function renderErrorPage(title: string, url: string, reason: string): string {
+  const safeReason = reason.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+  const safeTitle = title.replace(/&/g, '&amp;').replace(/</g, '&lt;')
+  const safeUrl = url.replace(/&/g, '&amp;').replace(/</g, '&lt;')
+  return `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Unable to open — ${safeTitle}</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font: 14px/1.6 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f7f7f7; color: #111; }
+    .container { max-width: 480px; margin: 80px auto; text-align: center; }
+    .icon { font-size: 48px; margin-bottom: 12px; }
+    h1 { font-size: 20px; margin: 0 0 8px; }
+    .reason { color: #c00; margin-bottom: 16px; font-family: ui-monospace, monospace; font-size: 13px; }
+    .url-box { font-family: ui-monospace, monospace; font-size: 12px; color: #888; background: #fff; padding: 8px 12px; border-radius: 4px; border: 1px solid #e0e0e0; word-break: break-all; margin-bottom: 24px; }
+    a { color: #0066cc; text-decoration: none; }
+    .back { display: inline-block; padding: 8px 20px; border: 1px solid #888; border-radius: 4px; color: #111; }
+    .back:hover { background: #eee; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="icon">⚠</div>
+    <h1>Unable to open document</h1>
+    <p class="reason">${safeReason}</p>
+    <div class="url-box">${safeTitle}<br/>${safeUrl}</div>
+    <a class="back" href="/">← Back to home</a>
+  </div>
+</body>
+</html>`
+}
+
 function renderHostPage(args: {
   token: string
   editorServiceOrigin: string
@@ -405,25 +483,34 @@ function renderHostPage(args: {
   fileType: string
   title: string
   documentUrl?: string
+  mode?: 'edit' | 'view'
+  theme?: string
 }): string {
   const { token, editorServiceOrigin, hostOrigin, documentType, fileId, fileType, title } = args
+  const mode = args.mode ?? 'edit'
+  const theme = args.theme ?? 'light'
   const docUrl = args.documentUrl ?? `${hostOrigin}/files/${fileId}/bytes`
   return `<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>GenOffice Reference Host</title>
+  <title>PrismOffice Reference Host</title>
   <style>
     body { margin: 0; font: 14px/1.4 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
     header { padding: 8px 16px; border-bottom: 1px solid #ddd; background: #f7f7f7; }
     h1 { font-size: 14px; margin: 0; }
     main { padding: 16px; height: calc(100vh - 80px); box-sizing: border-box; }
     #events { font-family: ui-monospace, monospace; font-size: 12px; max-height: 30%; overflow: auto; background: #fafafa; padding: 8px; border-radius: 4px; margin-top: 12px; white-space: pre-wrap; }
+    #doc-error { display: flex; align-items: center; justify-content: center; width: 100%; height: 60%; background: #fff; border: 1px solid #e8e8e8; border-radius: 4px; }
+    #doc-error .inner { text-align: center; padding: 24px; }
+    #doc-error .ei { font-size: 36px; margin-bottom: 8px; }
+    #doc-error .et { font-size: 15px; font-weight: 600; color: #333; margin-bottom: 4px; }
+    #doc-error .ed { font-size: 12px; color: #999; font-family: ui-monospace, monospace; max-width: 400px; word-break: break-word; }
   </style>
 </head>
 <body>
   <header>
-    <h1>GenOffice Reference Host — ${documentType}</h1>
+    <h1>PrismOffice Reference Host — ${documentType}</h1>
   </header>
   <main>
     <div id="placeholder" style="width:100%;height:60%;"></div>
@@ -433,8 +520,21 @@ function renderHostPage(args: {
   <script>
     const eventsEl = document.getElementById('events')
     const logEvent = (msg) => { eventsEl.textContent += '\\n' + msg }
+    let docReady = false
+    const showDocError = (msg) => {
+      if (document.getElementById('doc-error')) return
+      const main = document.querySelector('main')
+      if (!main) return
+      const el = document.createElement('div')
+      el.id = 'doc-error'
+      const safe = String(msg).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      el.innerHTML = '<div class="inner"><div class="ei">⚠</div><div class="et">Unable to open document</div><div class="ed">' + safe + '</div></div>'
+      const ph = document.getElementById('placeholder')
+      if (ph) ph.style.display = 'none'
+      main.insertBefore(el, main.firstChild)
+    }
     window.addEventListener('load', () => {
-      logEvent('SDK loaded: GenOfficeAPI = ' + (typeof window.GenOfficeAPI))
+      logEvent('SDK loaded: PrismOfficeAPI = ' + (typeof window.PrismOfficeAPI))
       const config = {
         documentType: ${JSON.stringify(documentType)},
         document: {
@@ -444,20 +544,28 @@ function renderHostPage(args: {
           title: ${JSON.stringify(title)},
         },
         editorConfig: {
-          mode: 'edit',
+          mode: '${mode}',
           callbackUrl: '${hostOrigin}/track',
           user: { id: 'alice', name: 'Alice' },
+          customization: { uiTheme: '${theme}' },
         },
         events: {
           onAppReady: () => logEvent('event: onAppReady'),
-          onDocumentReady: () => logEvent('event: onDocumentReady'),
+          onDocumentReady: () => { docReady = true; logEvent('event: onDocumentReady') },
           onDocumentStateChange: (e) => logEvent('event: onDocumentStateChange dirty=' + e.data),
-          onError: (e) => logEvent('event: onError ' + JSON.stringify(e.data)),
+          onError: (e) => {
+            logEvent('event: onError ' + JSON.stringify(e.data))
+            const d = e.data || {}
+            showDocError(d.errorDescription || d.message || JSON.stringify(d))
+          },
         },
         token: ${JSON.stringify(token)},
       }
       logEvent('instantiating DocEditor (editor origin ${editorServiceOrigin})')
-      window.editor = new window.GenOfficeAPI.DocEditor('placeholder', config)
+      window.editor = new window.PrismOfficeAPI.DocEditor('placeholder', config)
+      setTimeout(() => {
+        if (!docReady) showDocError('Document did not load within 30 seconds. The URL may be unreachable or the file may be invalid.')
+      }, 30000)
     })
   </script>
 </body>

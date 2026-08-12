@@ -3,7 +3,7 @@
 // pattern: <script src="https://editor.internal/sdk/genoffice.js">).
 //
 // Output is a single file with no imports — safe to drop into any host page.
-// The SDK registers window.GenOfficeAPI as a side effect of import, so we
+// The SDK registers window.PrismOfficeAPI as a side effect of import, so we
 // don't need a globalName.
 
 import { build } from 'esbuild'
@@ -28,7 +28,7 @@ await build({
   platform: 'browser',
   legalComments: 'none',
   banner: {
-    js: '/* GenOffice editor SDK — bundle of @genoffice/sdk-shared. Registers window.GenOfficeAPI. */',
+    js: '/* PrismOffice editor SDK — bundle of @genoffice/sdk-shared. Registers window.PrismOfficeAPI. */',
   },
 })
 

@@ -267,4 +267,6 @@ export interface DesktopApi {
   reportCloseSaveResult(ok: boolean): void
   /** keep the native View menu's checkbox items in sync with renderer state */
   reportViewMenuState(state: { aiSidebar: boolean; darkCanvas: boolean }): void
+  /** editor mode from the host config: 'view' = read-only, 'edit' = full editing. Absent on desktop. */
+  getEditorMode?: () => Promise<'edit' | 'view'>
 }

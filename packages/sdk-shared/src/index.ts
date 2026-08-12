@@ -8,7 +8,7 @@
  *
  *     <script src="https://editor.internal/sdk/genoffice.js"></script>
  *     <script>
- *       const editor = new GenOfficeAPI.DocEditor("placeholder", {
+ *       const editor = new PrismOfficeAPI.DocEditor("placeholder", {
  *         documentType: "word",
  *         document: { key, url, fileType, ... },
  *         editorConfig: { callbackUrl, user, ... },
@@ -319,12 +319,12 @@ function resolveEditorOrigin(): string {
 
 declare global {
   interface Window {
-    GenOfficeAPI?: { DocEditor: typeof DocEditor }
+    PrismOfficeAPI?: { DocEditor: typeof DocEditor }
   }
 }
 
 if (typeof window !== 'undefined') {
-  window.GenOfficeAPI = { DocEditor }
+  window.PrismOfficeAPI = { DocEditor }
 }
 
 export { signJwt, verifyJwt } from './jwt'

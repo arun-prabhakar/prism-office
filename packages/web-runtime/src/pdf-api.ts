@@ -66,7 +66,10 @@ export function createPdfApi(opts: PdfWebRuntimeOpts): PdfApi {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ config }),
     })
-    if (!res.ok) throw new Error(`fetch-document ${res.status}`)
+    if (!res.ok) {
+      const errBody = await res.json().catch(() => null)
+      throw new Error(errBody?.error || `fetch-document ${res.status}`)
+    }
     docBytes = await res.arrayBuffer()
     return docBytes
   }
