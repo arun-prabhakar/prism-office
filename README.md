@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/prismoffice-logo.png" alt="PrismOffice" width="480" />
+  <img src="docs/prismoffice-logo.png" alt="PrismOffice" width="140" />
 </p>
 
 # PrismOffice
