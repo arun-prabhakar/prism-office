@@ -303,6 +303,8 @@ const DEFAULT_SETTINGS: AiSettings = {
   ) as AiSettings['providers'],
 }
 
+const aiAvailable = typeof window.desktop.getEditorMode !== 'function'
+
 export function App() {
   // subscribe to language switches for re-render; strings all go through module-level t, so memoized callbacks never capture stale closures
   const { lang } = useI18n()
@@ -493,7 +495,6 @@ export function App() {
   const [viewMode, setViewMode] = useState<ViewMode>('print')
   const [readMode, setReadMode] = useState(false)
   const [viewModeLocked, setViewModeLocked] = useState(false)
-  const aiAvailable = typeof window.desktop.getEditorMode !== 'function'
   const [showGrid, setShowGrid] = useState(false)
   const [splitView, setSplitView] = useState(false)
   const [showPagePreview, setShowPagePreview] = useState(false)
