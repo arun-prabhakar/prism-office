@@ -117,8 +117,8 @@ describe.skipIf(process.env.SKIP_E2E === '1')('Phase 1 end-to-end wiring', () =>
     expect(html).toContain('PrismOfficeAPI.DocEditor')
   })
 
-  it('serves the SDK bundle at /sdk/genoffice.js', async () => {
-    const r = await fetch(`http://localhost:${editor!.port}/sdk/genoffice.js`)
+  it('serves the SDK bundle at /sdk/prismoffice.js', async () => {
+    const r = await fetch(`http://localhost:${editor!.port}/sdk/prismoffice.js`)
     expect(r.status).toBe(200)
     const js = await r.text()
     expect(js).toContain('PrismOfficeAPI')

@@ -34,7 +34,7 @@ import menuMdIcon1x from './assets/menu-md.png?asset'
 import menuMdIcon2x from './assets/menu-md@2x.png?asset'
 import menuHomeIcon1x from './assets/menu-home.png?asset'
 import menuHomeIcon2x from './assets/menu-home@2x.png?asset'
-import { createI18n, isLang, normalizeLang, setUiLang, type Lang } from '@genoffice/i18n'
+import { createI18n, isLang, normalizeLang, setUiLang, type Lang } from '@prismoffice/i18n'
 import {
   DEFAULT_SAVE_DIR_KEY,
   appMenuLabels,
@@ -46,7 +46,7 @@ import {
   showOpenDialogWithMemory,
   showSaveDialogWithMemory,
   windowMenuTemplate,
-} from '@genoffice/electron-utils'
+} from '@prismoffice/electron-utils'
 import { readAppSettings, writeAppSetting } from './app-settings'
 import {
   clearCloudProjectsStore,
@@ -54,7 +54,7 @@ import {
   readCloudProjectsStore,
   syncCloudProjects,
 } from './cloud-projects'
-import { ProjectStore } from '@genoffice/project-store'
+import { ProjectStore } from '@prismoffice/project-store'
 import {
   ensureGenofficeLogin,
   genofficeLogout,
@@ -65,7 +65,7 @@ import {
   resolveGskEntry,
   setGskProxyUrl,
   startGenofficeLogin,
-} from '@genoffice/ai-search'
+} from '@prismoffice/ai-search'
 
 import {
   buildDocsMenu,

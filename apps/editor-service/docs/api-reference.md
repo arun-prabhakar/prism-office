@@ -11,7 +11,7 @@
 <html>
 <body>
   <div id="placeholder"></div>
-  <script src="https://editor.internal/sdk/genoffice.js"></script>
+  <script src="https://EDITOR_SERVICE_URL/sdk/prismoffice.js"></script>
   <script>
     const config = {
       documentType: 'word',  // 'word' | 'pdf'
@@ -57,8 +57,8 @@
 ### Loading
 
 ```html
-<script src="https://editor.internal/sdk/genoffice.js"
-        data-editor-origin="https://editor.internal"></script>
+<script src="https://EDITOR_SERVICE_URL/sdk/prismoffice.js"
+        data-editor-origin="https://EDITOR_SERVICE_URL"></script>
 ```
 
 The SDK is a single ~10 KB IIFE bundle. It registers `window.PrismOfficeAPI`.
@@ -171,7 +171,7 @@ The host signs the serializable subset of the config (everything except `events`
 **JavaScript / Node.js:**
 
 ```javascript
-import { signConfig } from '@genoffice/sdk-shared/jwt-sign-browser'
+import { signConfig } from '@prismoffice/sdk-shared/jwt-sign-browser'
 
 const token = await signConfig(
   {
@@ -221,7 +221,7 @@ Authorization: Bearer <outbox-jwt>
 The outbox JWT payload is `{"payload":{"url":"<the-url-being-accessed>"}}`. The host verifies it:
 
 ```javascript
-import { verifyJwt } from '@genoffice/sdk-shared/jwt'
+import { verifyJwt } from '@prismoffice/sdk-shared/jwt'
 
 const payload = await verifyJwt(token, OUTBOX_SECRET)
 if (!payload) return 401
@@ -244,7 +244,7 @@ Authorization: Bearer <outbox-jwt>
 {
   "key": "Khirz6zTPdfd7",
   "status": 2,
-  "url": "https://editor.internal/saved/abc123",
+  "url": "https://EDITOR_SERVICE_URL/saved/abc123",
   "filetype": "docx"
 }
 ```
@@ -509,7 +509,7 @@ events: {
 | Method | Path | Auth | Description |
 |---|---|---|---|
 | `GET` | `/health` | none | Health probe. |
-| `GET` | `/sdk/genoffice.js` | none | SDK bundle. |
+| `GET` | `/sdk/prismoffice.js` | none | SDK bundle. |
 | `GET` | `/editor/word/` | none | Docs editor SPA. |
 | `GET` | `/editor/pdf/` | none | PDF editor SPA. |
 | `GET` | `/editor/*/assets/*` | none | Static assets (JS, CSS, fonts, wasm). |

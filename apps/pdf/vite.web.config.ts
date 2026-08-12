@@ -63,7 +63,7 @@ export default defineConfig({
     sourcemap: true,
   },
   optimizeDeps: {
-    exclude: ['@genoffice/pdf'],
+    exclude: ['@prismoffice/pdf'],
     include: ['buffer'],
   },
 })

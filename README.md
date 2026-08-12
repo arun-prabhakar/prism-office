@@ -75,10 +75,10 @@ docker run -p 3000:3000 \
 
 ```html
 <!-- 2. Embed in your page -->
-<div id="placeholder"></div>
-<script src="https://editor.internal/sdk/genoffice.js"></script>
+<div id="prismoffice"></div>
+<script src="https://EDITOR_SERVICE_URL/sdk/prismoffice.js"></script>
 <script>
-  new PrismOfficeAPI.DocEditor('placeholder', {
+  new PrismOfficeAPI.DocEditor('prismoffice', {
     documentType: 'word',
     document: { key: 'doc-1', url: 'https://your-app.com/files/doc-1.docx' },
     editorConfig: { callbackUrl: 'https://your-app.com/track' },
@@ -123,11 +123,11 @@ re-editable PDF rather than a flattened image with annotation overlays.
 npm install
 
 # Build the SDK bundle → apps/editor-service/static/sdk/
-npm run build:sdk -w @genoffice/editor-service
+npm run build:sdk -w @prismoffice/editor-service
 
 # Build the editor SPA bundles → apps/editor-service/static/editor/{word,pdf}/
-npm run build:web -w @genoffice/docs
-npm run build:web -w @genoffice/pdf
+npm run build:web -w @prismoffice/docs
+npm run build:web -w @prismoffice/pdf
 
 # Run the editor service (port 3000) and the reference host (port 3001)
 npx tsx apps/editor-service/src/server.ts &

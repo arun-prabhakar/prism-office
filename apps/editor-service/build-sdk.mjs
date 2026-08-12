@@ -1,6 +1,6 @@
-// Bundle the SDK into a single IIFE file at static/sdk/genoffice.js so the
-// editor service can serve it at /sdk/genoffice.js (matches the ONLYOFFICE
-// pattern: <script src="https://editor.internal/sdk/genoffice.js">).
+// Bundle the SDK into a single IIFE file at static/sdk/prismoffice.js so the
+// editor service can serve it at /sdk/prismoffice.js (matches the ONLYOFFICE
+// pattern: <script src="https://EDITOR_SERVICE_URL/sdk/prismoffice.js">).
 //
 // Output is a single file with no imports — safe to drop into any host page.
 // The SDK registers window.PrismOfficeAPI as a side effect of import, so we
@@ -14,7 +14,7 @@ import { fileURLToPath } from 'node:url'
 const here = dirname(fileURLToPath(import.meta.url))
 const workspaceRoot = join(here, '..', '..')
 const outDir = join(here, 'static', 'sdk')
-const outFile = join(outDir, 'genoffice.js')
+const outFile = join(outDir, 'prismoffice.js')
 
 await rm(outDir, { recursive: true, force: true })
 await mkdir(outDir, { recursive: true })
@@ -28,7 +28,7 @@ await build({
   platform: 'browser',
   legalComments: 'none',
   banner: {
-    js: '/* PrismOffice editor SDK — bundle of @genoffice/sdk-shared. Registers window.PrismOfficeAPI. */',
+    js: '/* PrismOffice editor SDK — bundle of @prismoffice/sdk-shared. Registers window.PrismOfficeAPI. */',
   },
 })
 

@@ -1,5 +1,5 @@
 {
-  "name": "genoffice",
+  "name": "prismoffice",
   "version": "0.1.0",
   "private": true,
   "description": "AI-native office suite (docs, sheets, slides, pdf)",
@@ -22,20 +22,20 @@
     "format:check": "node tools/format-changed.mjs --check",
     "check:theme-colors": "node tools/check-theme-colors.mjs",
     "lint": "eslint .",
-    "fixtures": "npm run fixtures -w @genoffice/docx-engine",
-    "test": "npm run test -w @genoffice/i18n && npm run test -w @genoffice/electron-utils && npm run test -w @genoffice/font-metrics && npm run test -w @genoffice/docx-engine && npm run test -w @genoffice/file-parse && npm run test -w @genoffice/pptx-engine && npm run test -w @genoffice/pptx-render && npm run test -w @genoffice/ai-search && npm run test -w @genoffice/agent-core && npm run test -w @genoffice/ai-provider && npm run test -w @genoffice/project-store && npm run test -w @genoffice/docs && npm run test -w @genoffice/sheets && npm run test -w @genoffice/shell && npm run test -w @genoffice/slides && npm run test -w @genoffice/pdf && npm run test -w @genoffice/markdown && npm run test -w @genoffice/editor-contract && npm run test -w @genoffice/sdk-shared && npm run test -w @genoffice/editor-service && npm run test -w @genoffice/reference-host",
-    "typecheck": "npm run typecheck -w @genoffice/i18n && npm run typecheck -w @genoffice/electron-utils && npm run typecheck -w @genoffice/font-metrics && npm run typecheck -w @genoffice/docx-engine && npm run typecheck -w @genoffice/file-parse && npm run typecheck -w @genoffice/pptx-engine && npm run typecheck -w @genoffice/pptx-render && npm run typecheck -w @genoffice/ai-search && npm run typecheck -w @genoffice/agent-core && npm run typecheck -w @genoffice/ai-provider && npm run typecheck -w @genoffice/project-store && npm run typecheck -w @genoffice/ui && npm run typecheck -w @genoffice/docs && npm run typecheck -w @genoffice/sheets && npm run typecheck -w @genoffice/shell && npm run typecheck -w @genoffice/slides && npm run typecheck -w @genoffice/pdf && npm run typecheck -w @genoffice/markdown && npm run typecheck -w @genoffice/editor-contract && npm run typecheck -w @genoffice/sdk-shared && npm run typecheck -w @genoffice/editor-service && npm run typecheck -w @genoffice/reference-host",
-    "dev": "concurrently -k -n docs,sheets,slides,pdf,markdown,shell -c blue,green,yellow,red,cyan,magenta \"npm run dev:renderer -w @genoffice/docs\" \"npm run dev:renderer -w @genoffice/sheets\" \"npm run dev:renderer -w @genoffice/slides\" \"npm run dev:renderer -w @genoffice/pdf\" \"npm run dev:renderer -w @genoffice/markdown\" \"DOCS_RENDERER_URL=http://localhost:5173 SHEETS_RENDERER_URL=http://localhost:5174 SLIDES_RENDERER_URL=http://localhost:5175 PDF_RENDERER_URL=http://localhost:5176 MARKDOWN_RENDERER_URL=http://localhost:5177 npm run dev -w @genoffice/shell\"",
-    "dev:docs": "npm run dev -w @genoffice/docs",
-    "build": "npm run build -w @genoffice/docs",
-    "build:all": "npm run build -w @genoffice/docs && npm run build -w @genoffice/sheets && npm run build -w @genoffice/slides && npm run build -w @genoffice/pdf && npm run build -w @genoffice/markdown && npm run build -w @genoffice/shell",
+    "fixtures": "npm run fixtures -w @prismoffice/docx-engine",
+    "test": "npm run test -w @prismoffice/i18n && npm run test -w @prismoffice/electron-utils && npm run test -w @prismoffice/font-metrics && npm run test -w @prismoffice/docx-engine && npm run test -w @prismoffice/file-parse && npm run test -w @prismoffice/pptx-engine && npm run test -w @prismoffice/pptx-render && npm run test -w @prismoffice/ai-search && npm run test -w @prismoffice/agent-core && npm run test -w @prismoffice/ai-provider && npm run test -w @prismoffice/project-store && npm run test -w @prismoffice/docs && npm run test -w @prismoffice/sheets && npm run test -w @prismoffice/shell && npm run test -w @prismoffice/slides && npm run test -w @prismoffice/pdf && npm run test -w @prismoffice/markdown && npm run test -w @prismoffice/editor-contract && npm run test -w @prismoffice/sdk-shared && npm run test -w @prismoffice/editor-service && npm run test -w @prismoffice/reference-host",
+    "typecheck": "npm run typecheck -w @prismoffice/i18n && npm run typecheck -w @prismoffice/electron-utils && npm run typecheck -w @prismoffice/font-metrics && npm run typecheck -w @prismoffice/docx-engine && npm run typecheck -w @prismoffice/file-parse && npm run typecheck -w @prismoffice/pptx-engine && npm run typecheck -w @prismoffice/pptx-render && npm run typecheck -w @prismoffice/ai-search && npm run typecheck -w @prismoffice/agent-core && npm run typecheck -w @prismoffice/ai-provider && npm run typecheck -w @prismoffice/project-store && npm run typecheck -w @prismoffice/ui && npm run typecheck -w @prismoffice/docs && npm run typecheck -w @prismoffice/sheets && npm run typecheck -w @prismoffice/shell && npm run typecheck -w @prismoffice/slides && npm run typecheck -w @prismoffice/pdf && npm run typecheck -w @prismoffice/markdown && npm run typecheck -w @prismoffice/editor-contract && npm run typecheck -w @prismoffice/sdk-shared && npm run typecheck -w @prismoffice/editor-service && npm run typecheck -w @prismoffice/reference-host",
+    "dev": "concurrently -k -n docs,sheets,slides,pdf,markdown,shell -c blue,green,yellow,red,cyan,magenta \"npm run dev:renderer -w @prismoffice/docs\" \"npm run dev:renderer -w @prismoffice/sheets\" \"npm run dev:renderer -w @prismoffice/slides\" \"npm run dev:renderer -w @prismoffice/pdf\" \"npm run dev:renderer -w @prismoffice/markdown\" \"DOCS_RENDERER_URL=http://localhost:5173 SHEETS_RENDERER_URL=http://localhost:5174 SLIDES_RENDERER_URL=http://localhost:5175 PDF_RENDERER_URL=http://localhost:5176 MARKDOWN_RENDERER_URL=http://localhost:5177 npm run dev -w @prismoffice/shell\"",
+    "dev:docs": "npm run dev -w @prismoffice/docs",
+    "build": "npm run build -w @prismoffice/docs",
+    "build:all": "npm run build -w @prismoffice/docs && npm run build -w @prismoffice/sheets && npm run build -w @prismoffice/slides && npm run build -w @prismoffice/pdf && npm run build -w @prismoffice/markdown && npm run build -w @prismoffice/shell",
     "shell": "npm run build:all && electron apps/shell",
     "test:e2e": "playwright test --config e2e/playwright.config.ts",
     "notices": "node tools/gen-third-party-notices.mjs",
     "licenses": "node tools/check-licenses.mjs",
-    "dist:mac": "npm run notices && npm run build:all && npm run native:build:universal -w @genoffice/sheets && npm run dist:mac -w @genoffice/shell",
-    "dist:win": "npm run notices && npm run build:all && npm run dist:win -w @genoffice/shell",
-    "dist:linux": "npm run notices && npm run build:all && npm run dist:linux -w @genoffice/shell"
+    "dist:mac": "npm run notices && npm run build:all && npm run native:build:universal -w @prismoffice/sheets && npm run dist:mac -w @prismoffice/shell",
+    "dist:win": "npm run notices && npm run build:all && npm run dist:win -w @prismoffice/shell",
+    "dist:linux": "npm run notices && npm run build:all && npm run dist:linux -w @prismoffice/shell"
   },
   "dependencies": {
     "ws": "^8.21.1"

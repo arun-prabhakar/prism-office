@@ -12,7 +12,7 @@
  * iframe learns it without trusting an unsigned postMessage).
  */
 
-import type { EditorConfigRoot, EditorEvents } from '@genoffice/editor-contract'
+import type { EditorConfigRoot, EditorEvents } from '@prismoffice/editor-contract'
 
 export const PROTOCOL_VERSION = 1
 

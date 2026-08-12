@@ -1,5 +1,5 @@
 {
-  "name": "@genoffice/reference-host",
+  "name": "@prismoffice/reference-host",
   "version": "0.1.0",
   "license": "Apache-2.0",
   "private": true,
@@ -12,8 +12,8 @@
     "start": "node dist/server/index.js"
   },
   "dependencies": {
-    "@genoffice/editor-contract": "*",
-    "@genoffice/sdk-shared": "*",
+    "@prismoffice/editor-contract": "*",
+    "@prismoffice/sdk-shared": "*",
     "@hono/node-server": "^1.13.7",
     "hono": "^4.6.14"
   },

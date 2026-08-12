@@ -1,10 +1,10 @@
 {
-  "name": "@genoffice/sdk-shared",
+  "name": "@prismoffice/sdk-shared",
   "version": "0.1.0",
   "license": "Apache-2.0",
   "private": true,
   "type": "module",
-  "description": "GenOffice editor SDK — the GenOfficeAPI.DocEditor constructor + JWT signing helpers shipped to integrators at /sdk/genoffice.js",
+  "description": "PrismOffice editor SDK — the PrismOfficeAPI.DocEditor constructor + JWT signing helpers shipped to integrators at /sdk/prismoffice.js",
   "exports": {
     ".": "./src/index.ts",
     "./jwt": "./src/jwt.ts",
@@ -16,7 +16,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@genoffice/editor-contract": "*"
+    "@prismoffice/editor-contract": "*"
   },
   "devDependencies": {
     "jsdom": "^28.0.0",

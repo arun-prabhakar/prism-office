@@ -6,7 +6,7 @@
  * `./jwt.ts`. Browser integrators can use this directly.
  */
 
-import type { EditorConfigRoot, EditorConfigTokenPayload } from '@genoffice/editor-contract'
+import type { EditorConfigRoot, EditorConfigTokenPayload } from '@prismoffice/editor-contract'
 import { signJwt, verifyJwt } from './jwt'
 
 /**

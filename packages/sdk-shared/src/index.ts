@@ -1,12 +1,12 @@
 /**
- * @genoffice/sdk-shared
+ * @prismoffice/sdk-shared
  *
- * The GenOffice editor SDK, served to integrators at `/sdk/genoffice.js`.
+ * The GenOffice editor SDK, served to integrators at `/sdk/prismoffice.js`.
  *
  * Shape mirrors ONLYOFFICE's DocsAPI.DocEditor so integrators familiar with
  * that ecosystem can adopt ours with minimal relearning.
  *
- *     <script src="https://editor.internal/sdk/genoffice.js"></script>
+ *     <script src="https://EDITOR_SERVICE_URL/sdk/prismoffice.js"></script>
  *     <script>
  *       const editor = new PrismOfficeAPI.DocEditor("placeholder", {
  *         documentType: "word",
@@ -35,7 +35,7 @@ import type {
   HistoryData,
   HistoryEntry,
   InsertImagePayload,
-} from '@genoffice/editor-contract'
+} from '@prismoffice/editor-contract'
 import {
   type HostMessage,
   type IframeMessage,
@@ -280,9 +280,9 @@ function createIframe(editorOrigin: string, config: EditorConfigRoot): HTMLIFram
 /**
  * Derive the editor service origin from the SDK's own `<script>` src.
  *
- *   <script src="https://editor.internal/sdk/genoffice.js"></script>
+ *   <script src="https://EDITOR_SERVICE_URL/sdk/prismoffice.js"></script>
  *
- * → editor origin is `https://editor.internal`.
+ * → editor origin is `https://EDITOR_SERVICE_URL`.
  *
  * Falls back to `window.location.origin` if the SDK was bundled (no separate
  * script tag) — useful for development when the SDK is imported as a module.
@@ -293,7 +293,7 @@ function resolveEditorOrigin(): string {
   }
   // Prefer the explicit data-editor-origin attribute on the SDK script.
   const scripts = document.querySelectorAll<HTMLScriptElement>(
-    'script[src*="/sdk/genoffice"], script[data-genoffice-sdk]',
+    'script[src*="/sdk/prismoffice"], script[data-prismoffice-sdk]',
   )
   for (let i = scripts.length - 1; i >= 0; i--) {
     const s = scripts[i]
@@ -343,4 +343,4 @@ export type {
   CallbackStatus,
   CallbackRequest,
   CallbackResponse,
-} from '@genoffice/editor-contract'
+} from '@prismoffice/editor-contract'

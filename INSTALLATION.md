@@ -93,9 +93,9 @@ Useful for development, or when you want to run without containers.
 PRISMOFFICE_SKIP_ELECTRON=1 npm install
 
 # 2. Build the SDK bundle and the editor SPA bundles
-npm run build:sdk -w @genoffice/editor-service
-npm run build:web -w @genoffice/docs
-npm run build:web -w @genoffice/pdf
+npm run build:sdk -w @prismoffice/editor-service
+npm run build:web -w @prismoffice/docs
+npm run build:web -w @prismoffice/pdf
 
 # 3. Run the service
 export PORT=3000
@@ -133,7 +133,7 @@ the editor into a placeholder element.
 ### 1. Load the SDK
 
 ```html
-<script src="https://editor.internal/sdk/genoffice.js"></script>
+<script src="https://EDITOR_SERVICE_URL/sdk/prismoffice.js"></script>
 ```
 
 This registers `window.PrismOfficeAPI` with a single constructor,
@@ -148,7 +148,7 @@ redirect a save or point the editor at the wrong file.
 
 ```js
 // server-side, in your host app (NEVER expose the secret to the browser)
-import { signConfig } from '@genoffice/sdk-shared/jwt-sign-browser'
+import { signConfig } from '@prismoffice/sdk-shared/jwt-sign-browser'
 
 const config = {
   documentType: 'word',                       // 'word' | 'pdf'
@@ -200,7 +200,7 @@ to the service, which forwards them to your `callbackUrl`.
 `callbackUrl` receives POSTs like:
 
 ```json
-{ "status": "save", "key": "doc-123", "url": "https://editor.internal/saved/<id>" }
+{ "status": "save", "key": "doc-123", "url": "https://EDITOR_SERVICE_URL/saved/<id>" }
 ```
 
 Your host app fetches the updated bytes from `url` (the request is signed with
@@ -236,7 +236,7 @@ point for your own integration.
 ## Verification checklist
 
 - [ ] `GET /health` returns `{"ok":true,...}`.
-- [ ] `GET /sdk/genoffice.js` returns the SDK bundle (defines
+- [ ] `GET /sdk/prismoffice.js` returns the SDK bundle (defines
       `window.PrismOfficeAPI`).
 - [ ] A document opened through the reference host fires `onDocumentReady`.
 - [ ] After editing, the save callback reaches your `callbackUrl` and the

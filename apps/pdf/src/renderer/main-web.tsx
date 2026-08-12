@@ -1,6 +1,6 @@
-import type { EditorConfigRoot } from '@genoffice/editor-contract'
-import type { HostMessage } from '@genoffice/sdk-shared'
-import { createPdfApi } from '@genoffice/web-runtime'
+import type { EditorConfigRoot } from '@prismoffice/editor-contract'
+import type { HostMessage } from '@prismoffice/sdk-shared'
+import { createPdfApi } from '@prismoffice/web-runtime'
 import { PdfWorkerClient } from '../renderer-worker/client'
 
 window.parent.postMessage({ type: 'app-ready' }, '*')

@@ -22,8 +22,8 @@ COPY apps/docs ./apps/docs
 # Other apps are not required, but npm workspaces need the whole tree.
 RUN npm ci --no-audit --no-fund --ignore-scripts || npm install --no-audit --no-fund --ignore-scripts
 
-# Build the SDK bundle into static/sdk/genoffice.js
-RUN npm run build:sdk -w @genoffice/editor-service
+# Build the SDK bundle into static/sdk/prismoffice.js
+RUN npm run build:sdk -w @prismoffice/editor-service
 
 EXPOSE 3000
 ENV PORT=3000

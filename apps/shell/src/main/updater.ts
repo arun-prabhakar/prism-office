@@ -4,7 +4,7 @@ import { app, shell } from 'electron'
 import type { BrowserWindow } from 'electron'
 import { autoUpdater } from 'electron-updater'
 import type { UpdateInfo } from 'electron-updater'
-import { createI18n, getUiLang, htmlLang } from '@genoffice/i18n'
+import { createI18n, getUiLang, htmlLang } from '@prismoffice/i18n'
 import type { UpdateChannel, UpdateUiState, UpdateUiStrings } from '../shared/update-api'
 import {
   closeUpdateWindow,

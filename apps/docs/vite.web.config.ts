@@ -54,5 +54,5 @@ export default defineConfig({
     },
     sourcemap: true,
   },
-  optimizeDeps: { exclude: ['@genoffice/docs'] },
+  optimizeDeps: { exclude: ['@prismoffice/docs'] },
 })

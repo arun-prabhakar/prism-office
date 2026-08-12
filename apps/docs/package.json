@@ -1,5 +1,5 @@
 {
-  "name": "@genoffice/docs",
+  "name": "@prismoffice/docs",
   "productName": "GenOffice Docs",
   "version": "0.1.0",
   "license": "Apache-2.0",
@@ -22,17 +22,17 @@
     "dist:dir": "electron-vite build && electron-builder --dir"
   },
   "devDependencies": {
-    "@genoffice/agent-core": "*",
-    "@genoffice/i18n": "*",
-    "@genoffice/ai-provider": "*",
-    "@genoffice/ai-search": "*",
-    "@genoffice/docx-engine": "*",
-    "@genoffice/editor-contract": "*",
-    "@genoffice/file-parse": "*",
-    "@genoffice/project-store": "*",
-    "@genoffice/sdk-shared": "*",
-    "@genoffice/ui": "*",
-    "@genoffice/web-runtime": "*",
+    "@prismoffice/agent-core": "*",
+    "@prismoffice/i18n": "*",
+    "@prismoffice/ai-provider": "*",
+    "@prismoffice/ai-search": "*",
+    "@prismoffice/docx-engine": "*",
+    "@prismoffice/editor-contract": "*",
+    "@prismoffice/file-parse": "*",
+    "@prismoffice/project-store": "*",
+    "@prismoffice/sdk-shared": "*",
+    "@prismoffice/ui": "*",
+    "@prismoffice/web-runtime": "*",
     "@tiptap/core": "^3.28.0",
     "@tiptap/extensions": "^3.28.0",
     "@tiptap/pm": "^3.28.0",
@@ -97,10 +97,10 @@
     }
   },
   "dependencies": {
-    "@genoffice/electron-utils": "*",
-    "@genoffice/font-metrics": "*",
+    "@prismoffice/electron-utils": "*",
+    "@prismoffice/font-metrics": "*",
     "electron-updater": "^6.8.9",
     "pdf-lib": "^1.17.1",
-    "@genoffice/pptx-render": "*"
+    "@prismoffice/pptx-render": "*"
   }
 }

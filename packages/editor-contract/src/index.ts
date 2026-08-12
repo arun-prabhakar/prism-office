@@ -1,5 +1,5 @@
 /**
- * @genoffice/editor-contract
+ * @prismoffice/editor-contract
  *
  * Typed contract for the GenOffice embeddable editor. Mirrors the ONLYOFFICE
  * Docs API shape (config / events / callback handler / JWT) so integrators
@@ -116,6 +116,8 @@ export interface Customization {
   close?: { visible?: boolean; text?: string }
   /** GenOffice-specific: AI panel config. */
   ai?: { enabled?: boolean; sidebar?: boolean; model?: string }
+  /** Editor chrome theme. Document content stays fixed; only the surrounding UI follows. */
+  uiTheme?: 'light' | 'dark'
 }
 
 /**

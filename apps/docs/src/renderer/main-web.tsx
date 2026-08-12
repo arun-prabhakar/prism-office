@@ -18,15 +18,9 @@
  * window.desktop implementation differ.
  */
 
-import type { EditorConfigRoot } from '@genoffice/editor-contract'
-import type { HostMessage } from '@genoffice/sdk-shared'
-import { createDesktopApi } from '@genoffice/web-runtime'
-
-declare global {
-  interface Window {
-    desktop?: unknown
-  }
-}
+import type { EditorConfigRoot } from '@prismoffice/editor-contract'
+import type { HostMessage } from '@prismoffice/sdk-shared'
+import { createDesktopApi } from '@prismoffice/web-runtime'
 
 interface InitPayload {
   config: EditorConfigRoot
@@ -41,5 +35,5 @@ window.addEventListener('message', async (event: MessageEvent) => {
   const { config } = msg as unknown as InitPayload
   window.desktop = createDesktopApi({ config })
   // Dynamically import so window.desktop is set BEFORE the renderer boots.
-  await import('./main.tsx')
+  await import('./main')
 })

@@ -13,9 +13,9 @@ import { Hono, type Context } from 'hono'
 import { readFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { signConfig } from '@genoffice/sdk-shared/jwt-sign-browser'
-import { signJwt, verifyJwt } from '@genoffice/sdk-shared/jwt'
-import { CallbackStatus, type CallbackRequest } from '@genoffice/editor-contract'
+import { signConfig } from '@prismoffice/sdk-shared/jwt-sign-browser'
+import { signJwt, verifyJwt } from '@prismoffice/sdk-shared/jwt'
+import { CallbackStatus, type CallbackRequest } from '@prismoffice/editor-contract'
 
 const here = dirname(fileURLToPath(import.meta.url))
 const workspaceRoot = join(here, '..', '..', '..')
@@ -91,7 +91,7 @@ app.get('/open', async (c) => {
   if (!url) return c.text('Missing ?url= parameter. Example: /open?url=https://example.com/doc.docx', 400)
   const type = (c.req.query('type') ?? 'word') as 'word' | 'pdf'
   const mode = (c.req.query('mode') ?? 'edit') as 'edit' | 'view'
-  const theme = c.req.query('theme') ?? 'light'
+  const theme = c.req.query('theme') === 'dark' ? 'dark' : 'light'
   const fileType = type === 'pdf' ? 'pdf' : 'docx'
   const title = decodeURIComponent(url.split('/').pop()?.split('?')[0] ?? 'document')
   const ho = hostOrigin(c)
@@ -188,7 +188,7 @@ app.get('/files/:id/edit', async (c) => {
 
 app.get('/docs', async (c) => {
   const mode = (c.req.query('mode') ?? 'edit') as 'edit' | 'view'
-  const theme = c.req.query('theme') ?? 'light'
+  const theme = c.req.query('theme') === 'dark' ? 'dark' : 'light'
   const ho = hostOrigin(c)
   const token = await signConfig(
     {
@@ -225,7 +225,7 @@ app.get('/docs', async (c) => {
 
 app.get('/pdf', async (c) => {
   const mode = (c.req.query('mode') ?? 'edit') as 'edit' | 'view'
-  const theme = c.req.query('theme') ?? 'light'
+  const theme = c.req.query('theme') === 'dark' ? 'dark' : 'light'
   const ho = hostOrigin(c)
   const token = await signConfig(
     {
@@ -516,7 +516,7 @@ function renderHostPage(args: {
     <div id="placeholder" style="width:100%;height:60%;"></div>
     <div id="events">events will appear here</div>
   </main>
-  <script src="${editorServiceOrigin}/sdk/genoffice.js" data-editor-origin="${editorServiceOrigin}"></script>
+  <script src="${editorServiceOrigin}/sdk/prismoffice.js" data-editor-origin="${editorServiceOrigin}"></script>
   <script>
     const eventsEl = document.getElementById('events')
     const logEvent = (msg) => { eventsEl.textContent += '\\n' + msg }

@@ -9,12 +9,12 @@
  * does not change between desktop and web.
  */
 
-import type { Lang } from '@genoffice/i18n'
+import type { Lang } from '@prismoffice/i18n'
 import type {
   AiSettings,
   AiStreamChunk,
   AiStreamRequest,
-} from '@genoffice/ai-provider'
+} from '@prismoffice/ai-provider'
 import type {
   ExtractPagesRequest,
   ExtractPagesResult,
@@ -35,8 +35,8 @@ import type {
   TextEditValidation,
   UiTheme,
   ValidateTextEditsRequest,
-} from '@genoffice/pdf/shared/ipc'
-import type { EditorConfigRoot } from '@genoffice/editor-contract'
+} from '@prismoffice/pdf/shared/ipc'
+import type { EditorConfigRoot } from '@prismoffice/editor-contract'
 
 interface PdfWebRuntimeOpts {
   config: EditorConfigRoot

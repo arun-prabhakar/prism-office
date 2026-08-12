@@ -5,7 +5,7 @@ import {} from '@tiptap/pm/tables'
 import { cssCsFontFamily, cssDualFontFamily, cssFontFamily } from '../line-metrics'
 import { isEastAsianFontName } from '../font-list'
 import { t } from '../i18n/locale'
-import {} from '@genoffice/docx-engine'
+import {} from '@prismoffice/docx-engine'
 
 /**
  * Custom schema mirroring the docx-engine Block model 1:1.

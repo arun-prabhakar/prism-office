@@ -1,5 +1,5 @@
 {
-  "name": "@genoffice/editor-service",
+  "name": "@prismoffice/editor-service",
   "version": "0.1.0",
   "license": "Apache-2.0",
   "private": true,
@@ -15,13 +15,13 @@
     "start": "node dist/server/index.js"
   },
   "dependencies": {
-    "@genoffice/editor-contract": "*",
+    "@prismoffice/editor-contract": "*",
     "@hono/node-server": "^1.13.7",
     "hono": "^4.6.14"
   },
   "devDependencies": {
     "@embedpdf/pdfium": "*",
-    "@genoffice/sdk-shared": "*",
+    "@prismoffice/sdk-shared": "*",
     "@types/node": "^24.10.1",
     "esbuild": "^0.24.0",
     "jszip": "^3.10.1",

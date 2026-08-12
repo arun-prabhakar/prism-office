@@ -22,8 +22,8 @@ import {
   safeExternalUrl,
   showOpenDialogWithMemory,
   showSaveDialogWithMemory,
-} from '@genoffice/electron-utils'
-import { createI18n, getUiLang } from '@genoffice/i18n'
+} from '@prismoffice/electron-utils'
+import { createI18n, getUiLang } from '@prismoffice/i18n'
 import { atomicWriteFile } from './atomic-write'
 import { MARKDOWN_CHANNELS } from '../shared/ipc'
 import type {
@@ -754,7 +754,7 @@ export function createMarkdownView(openPath?: string | null): WebContentsView {
   return view
 }
 
-/** Standalone window mode: `npm run dev -w @genoffice/markdown`, md path passed via argv */
+/** Standalone window mode: `npm run dev -w @prismoffice/markdown`, md path passed via argv */
 export function startMarkdownStandalone(): void {
   installNavigationGuard(app)
   installContextMenu(app, () => contextMenuLabels(getUiLang()))

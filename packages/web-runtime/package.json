@@ -1,5 +1,5 @@
 {
-  "name": "@genoffice/web-runtime",
+  "name": "@prismoffice/web-runtime",
   "version": "0.1.0",
   "license": "Apache-2.0",
   "private": true,
@@ -15,9 +15,9 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@genoffice/docs": "*",
-    "@genoffice/editor-contract": "*",
-    "@genoffice/pdf": "*"
+    "@prismoffice/docs": "*",
+    "@prismoffice/editor-contract": "*",
+    "@prismoffice/pdf": "*"
   },
   "devDependencies": {
     "typescript": "^5.9.3",

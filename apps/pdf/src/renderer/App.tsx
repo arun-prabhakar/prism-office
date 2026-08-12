@@ -85,7 +85,7 @@ import {
   runsToColors,
   spliceCharColors,
 } from './color-runs'
-import { platformShortcuts } from '@genoffice/i18n'
+import { platformShortcuts } from '@prismoffice/i18n'
 import { useI18n } from './i18n/locale'
 import { useAutosave } from './useAutosave'
 import { EDIT_FONTS } from '../shared/ipc'

@@ -19,8 +19,8 @@ import {
   type AiStreamRequest,
   type GenSparkAccountStatus,
   type LegacyAiSettings,
-} from '@genoffice/ai-provider'
-import { fetchRemoteImage } from '@genoffice/electron-utils'
+} from '@prismoffice/ai-provider'
+import { fetchRemoteImage } from '@prismoffice/electron-utils'
 import {
   webSearch,
   imageSearch,
@@ -30,13 +30,13 @@ import {
   gskAnalyzeMedia,
   gskLoginInfo,
   hasGskAuth,
-} from '@genoffice/ai-search'
-import { addPicture, replacePictureBytes } from '@genoffice/pptx-engine'
-import { EMU_PER_PX_96 } from '@genoffice/pptx-render'
+} from '@prismoffice/ai-search'
+import { addPicture, replacePictureBytes } from '@prismoffice/pptx-engine'
+import { EMU_PER_PX_96 } from '@prismoffice/pptx-render'
 import { tm } from './i18n-main'
 import { pushHistory, rebuildSlide, scheduleHistoryNotify, sessions } from './session-state'
 
-// ---- AI settings + streaming proxy (the main process does the networking to avoid renderer CORS; implementation shared via @genoffice/ai-provider) ----
+// ---- AI settings + streaming proxy (the main process does the networking to avoid renderer CORS; implementation shared via @prismoffice/ai-provider) ----
 
 const AI_SETTINGS_PATH = () => join(app.getPath('userData'), 'ai-settings.json')
 

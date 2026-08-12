@@ -5,7 +5,7 @@ import {
   type HfImage,
   type HfParagraph,
   type Run,
-} from '@genoffice/docx-engine'
+} from '@prismoffice/docx-engine'
 import { cssDualFontFamily, cssFontFamily } from '../line-metrics'
 
 /**

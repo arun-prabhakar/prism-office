@@ -3,7 +3,7 @@
  *
  * Routes:
  *   GET  /health                  — readiness probe
- *   GET  /sdk/*                   — static SDK bundle (genoffice.js)
+ *   GET  /sdk/*                   — static SDK bundle (prismoffice.js)
  *   GET  /editor/word/*           — docs editor SPA (Phase 2 fills in)
  *   GET  /editor/pdf/*            — pdf editor SPA (Phase 3 fills in)
  *   POST /fetch-document          — iframe → server proxy for document.url
@@ -31,9 +31,9 @@ import {
   type EditorConfigTokenPayload,
   CallbackStatus,
   type CallbackRequest,
-} from '@genoffice/editor-contract'
-import { signJwt } from '@genoffice/sdk-shared/jwt'
-import { verifyConfigToken } from '@genoffice/sdk-shared/jwt-sign-browser'
+} from '@prismoffice/editor-contract'
+import { signJwt } from '@prismoffice/sdk-shared/jwt'
+import { verifyConfigToken } from '@prismoffice/sdk-shared/jwt-sign-browser'
 import { loadConfig, type ServerConfig } from './config.js'
 import { TempStore, newSavedId } from './temp-store.js'
 

@@ -12,7 +12,7 @@
  *   - stubs the menu/close/telemetry surface that has no web equivalent
  *   - stubs AI calls (Phase 4 fills these in with /ai/* routes)
  *
- * Shape mirrors @genoffice/docs/shared/ipc `DesktopApi` 1:1 — the renderer
+ * Shape mirrors @prismoffice/docs/shared/ipc `DesktopApi` 1:1 — the renderer
  * code does not change between desktop and web.
  */
 
@@ -32,8 +32,8 @@ import type {
   OpenFileResult,
   PickImageResult,
   UiTheme,
-} from '@genoffice/docs/shared/ipc'
-import type { EditorConfigRoot } from '@genoffice/editor-contract'
+} from '@prismoffice/docs/shared/ipc'
+import type { EditorConfigRoot } from '@prismoffice/editor-contract'
 import { attachmentStore, newId, recoveryStore } from './storage.js'
 
 type Lang = 'zh' | 'en' | 'ja' | 'ko' | 'fr' | 'de' | 'es' | 'th' | 'id' | 'ru' | 'ar'

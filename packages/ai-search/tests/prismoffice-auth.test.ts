@@ -12,7 +12,7 @@ import {
   resetGenofficeAuthCache,
   startGenofficeLogin,
   type GskLoginProgress,
-} from '../src/genoffice-auth'
+} from '../src/prismoffice-auth'
 import { gskApiKey, setGskProxyUrl } from '../src/gsk'
 
 const CODE = 'a'.repeat(64)
@@ -21,7 +21,7 @@ const AUTH_URL = `https://www.genspark.ai/api/office_addin_auth/verify?code=${CO
 let dir: string
 
 beforeEach(() => {
-  dir = mkdtempSync(join(tmpdir(), 'genoffice-auth-'))
+  dir = mkdtempSync(join(tmpdir(), 'prismoffice-auth-'))
   process.env.GENOFFICE_AUTH_DIR = dir
   delete process.env.GSK_API_KEY
   resetGenofficeAuthCache()
