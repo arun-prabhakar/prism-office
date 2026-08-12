@@ -24,6 +24,7 @@
     "@genoffice/ai-search": "*",
     "@genoffice/editor-contract": "*",
     "@genoffice/electron-utils": "*",
+    "@genoffice/font-metrics": "*",
     "@genoffice/i18n": "*",
     "@genoffice/sdk-shared": "*",
     "@genoffice/ui": "*",
