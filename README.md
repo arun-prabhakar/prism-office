@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="docs/prismoffice-logo.png" alt="PrismOffice" width="480" />
+</p>
+
 # PrismOffice
 
 **Self-hosted, embeddable document editor for the web.**
