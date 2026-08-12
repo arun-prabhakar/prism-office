@@ -16,8 +16,8 @@
 // documentType & type
 // ---------------------------------------------------------------------------
 
-/** Editor app selected by file type. v1 ships two editors. */
-export type DocumentType = 'word' | 'pdf'
+/** Editor app selected by file type. */
+export type DocumentType = 'word' | 'pdf' | 'sheets'
 
 /** Platform profile. v1 honors `embedded` (read-only viewer); `desktop` is the default full editor. */
 export type EditorType = 'desktop' | 'mobile' | 'embedded'

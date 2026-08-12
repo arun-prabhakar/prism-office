@@ -71,6 +71,8 @@ app.get('/editor/word', (c) => c.body(readStatic('editor/word/index.html'), 200,
 app.get('/editor/word/', (c) => c.body(readStatic('editor/word/index.html'), 200, htmlHeaders))
 app.get('/editor/pdf', (c) => c.body(readStatic('editor/pdf/index.html'), 200, htmlHeaders))
 app.get('/editor/pdf/', (c) => c.body(readStatic('editor/pdf/index.html'), 200, htmlHeaders))
+app.get('/editor/sheets', (c) => c.body(readStatic('editor/sheets/index.html'), 200, htmlHeaders))
+app.get('/editor/sheets/', (c) => c.body(readStatic('editor/sheets/index.html'), 200, htmlHeaders))
 
 // -------------------------------------------------------------------------
 // /fetch-document — iframe asks the server to fetch document.url on its behalf

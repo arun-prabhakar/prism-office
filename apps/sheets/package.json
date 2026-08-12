@@ -6,9 +6,13 @@
   "description": "Cross-platform AI-native spreadsheet compatibility prototype",
   "license": "Apache-2.0",
   "main": "out/main/index.js",
+  "exports": {
+    "./shared/desktop-api": "./src/shared/desktop-api.ts"
+  },
   "scripts": {
     "dev": "electron-vite dev",
     "dev:renderer": "vite --config vite.renderer.config.ts",
+    "build:web": "vite build --config vite.web.config.ts",
     "build": "npm run native:build && electron-vite build",
     "native:build": "cargo build --release --manifest-path native/xlsx-engine/Cargo.toml --config native/xlsx-engine/.cargo/config.toml",
     "native:build:universal": "node scripts/build-sidecar-universal.mjs",

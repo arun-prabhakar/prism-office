@@ -260,6 +260,43 @@ app.get('/pdf', async (c) => {
   )
 })
 
+app.get('/sheets', async (c) => {
+  const mode = (c.req.query('mode') ?? 'edit') as 'edit' | 'view'
+  const theme = c.req.query('theme') === 'dark' ? 'dark' : 'light'
+  const ho = hostOrigin(c)
+  const token = await signConfig(
+    {
+      documentType: 'sheets',
+      document: {
+        key: 'fixture-sheet-' + Date.now(),
+        url: `${ho}/files/fixture-sheet/bytes`,
+        fileType: 'xlsx',
+        title: 'sample.xlsx',
+      },
+      editorConfig: {
+        mode,
+        callbackUrl: `${ho}/track`,
+        user: { id: 'alice', name: 'Alice' },
+        customization: { uiTheme: theme },
+      },
+    },
+    browserSecret,
+  )
+  return c.html(
+    renderHostPage({
+      token,
+      editorServiceOrigin: editorOrigin(c),
+      hostOrigin: ho,
+      documentType: 'sheets',
+      fileId: 'fixture-sheet',
+      fileType: 'xlsx',
+      title: 'sample.xlsx',
+      mode,
+      theme,
+    }),
+  )
+})
+
 // -------------------------------------------------------------------------
 // document.url endpoint — editor service fetches this with outbox JWT.
 // -------------------------------------------------------------------------
@@ -426,6 +463,11 @@ function renderLandingPage(editorServiceOrigin: string): string {
         <div class="icon">👁</div>
         <div class="name">Sample PDF</div>
         <div class="desc">.pdf — view</div>
+      </a>
+      <a class="card" href="/sheets">
+        <div class="icon">📊</div>
+        <div class="name">Sample Sheet</div>
+        <div class="desc">.xlsx — edit (web preview)</div>
       </a>
     </div>
     <form class="upload" method="POST" action="/upload" enctype="multipart/form-data">
