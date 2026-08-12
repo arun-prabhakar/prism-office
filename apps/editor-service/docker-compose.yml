@@ -9,8 +9,8 @@ services:
     ports:
       - '3000:3000'
     environment:
-      GENOFFICE_BROWSER_SECRET: dev-browser-secret
-      GENOFFICE_OUTBOX_SECRET: dev-outbox-secret
+      PRISMOFFICE_BROWSER_SECRET: dev-browser-secret
+      PRISMOFFICE_OUTBOX_SECRET: dev-outbox-secret
       PORT: '3000'
 
   reference-host:
@@ -20,8 +20,8 @@ services:
     ports:
       - '3001:3001'
     environment:
-      GENOFFICE_BROWSER_SECRET: dev-browser-secret
-      GENOFFICE_OUTBOX_SECRET: dev-outbox-secret
+      PRISMOFFICE_BROWSER_SECRET: dev-browser-secret
+      PRISMOFFICE_OUTBOX_SECRET: dev-outbox-secret
       EDITOR_SERVICE_URL: http://editor-service:3000
       PORT: '3001'
     depends_on:

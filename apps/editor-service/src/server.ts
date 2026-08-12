@@ -238,14 +238,14 @@ app.get('/saved/:id', async (c) => {
 
 // -------------------------------------------------------------------------
 // AI routes (Phase 4) — proxy to Genspark with the operator's gsk key.
-// Without GENOFFICE_GSK_KEY these return a clear "not configured" error.
+// Without PRISMOFFICE_GSK_KEY these return a clear "not configured" error.
 // -------------------------------------------------------------------------
 
 function aiNotConfigured(c: Context) {
   return c.json(
     {
       error:
-        'AI not configured. Set GENOFFICE_GSK_KEY on the editor service to enable the AI panel.',
+        'AI not configured. Set PRISMOFFICE_GSK_KEY on the editor service to enable the AI panel.',
     },
     503,
   )

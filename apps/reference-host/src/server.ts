@@ -22,8 +22,8 @@ const workspaceRoot = join(here, '..', '..', '..')
 const port = Number(process.env.PORT ?? '3001')
 const editorServicePort = Number(process.env.EDITOR_SERVICE_PORT ?? '3000')
 const configuredEditorOrigin = process.env.EDITOR_SERVICE_URL ?? ''
-const browserSecret = process.env.GENOFFICE_BROWSER_SECRET ?? 'dev-browser-secret'
-const outboxSecret = process.env.GENOFFICE_OUTBOX_SECRET ?? 'dev-outbox-secret'
+const browserSecret = process.env.PRISMOFFICE_BROWSER_SECRET ?? 'dev-browser-secret'
+const outboxSecret = process.env.PRISMOFFICE_OUTBOX_SECRET ?? 'dev-outbox-secret'
 
 function editorOrigin(c: Context): string {
   if (configuredEditorOrigin) return configuredEditorOrigin

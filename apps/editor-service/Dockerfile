@@ -9,9 +9,9 @@ FROM node:22-alpine AS base
 WORKDIR /workspace
 
 # Install all workspace deps (postinstall pulls Electron for the legacy
-# desktop build — disabled here via GENOFFICE_SKIP_ELECTRON to keep the
+# desktop build — disabled here via PRISMOFFICE_SKIP_ELECTRON to keep the
 # image lean; the editor service doesn't need Electron).
-ENV GENOFFICE_SKIP_ELECTRON=1
+ENV PRISMOFFICE_SKIP_ELECTRON=1
 COPY package.json package-lock.json* ./
 COPY tsconfig.base.json ./
 COPY packages ./packages
@@ -27,7 +27,7 @@ RUN npm run build:sdk -w @genoffice/editor-service
 
 EXPOSE 3000
 ENV PORT=3000
-ENV GENOFFICE_BROWSER_SECRET=change-me
-ENV GENOFFICE_OUTBOX_SECRET=change-me-too
+ENV PRISMOFFICE_BROWSER_SECRET=change-me
+ENV PRISMOFFICE_OUTBOX_SECRET=change-me-too
 
 CMD ["node", "--experimental-strip-types", "apps/editor-service/src/server.ts"]

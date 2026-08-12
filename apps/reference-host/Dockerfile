@@ -3,7 +3,7 @@
 FROM node:22-alpine AS base
 WORKDIR /workspace
 
-ENV GENOFFICE_SKIP_ELECTRON=1
+ENV PRISMOFFICE_SKIP_ELECTRON=1
 COPY package.json package-lock.json* ./
 COPY tsconfig.base.json ./
 COPY packages ./packages

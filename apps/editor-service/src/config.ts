@@ -29,10 +29,10 @@ function required(name: string, fallback?: string): string {
 export function loadConfig(): ServerConfig {
   return {
     port: Number(process.env.PORT ?? '3000'),
-    browserSecret: required('GENOFFICE_BROWSER_SECRET', 'dev-browser-secret'),
-    outboxSecret: required('GENOFFICE_OUTBOX_SECRET', 'dev-outbox-secret'),
-    inboxSecret: process.env.GENOFFICE_INBOX_SECRET,
+    browserSecret: required('PRISMOFFICE_BROWSER_SECRET', 'dev-browser-secret'),
+    outboxSecret: required('PRISMOFFICE_OUTBOX_SECRET', 'dev-outbox-secret'),
+    inboxSecret: process.env.PRISMOFFICE_INBOX_SECRET,
     savedUrlTtlSec: Number(process.env.SAVED_URL_TTL_SEC ?? '60'),
-    gskKey: process.env.GENOFFICE_GSK_KEY,
+    gskKey: process.env.PRISMOFFICE_GSK_KEY,
   }
 }

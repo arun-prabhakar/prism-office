@@ -263,7 +263,7 @@ export function createDesktopApi(opts: WebRuntimeOpts): DesktopApi {
       return aiSettings
     },
     async setAiSettings(_settings) {
-      /* settings are operator-configured via GENOFFICE_GSK_KEY */
+      /* settings are operator-configured via PRISMOFFICE_GSK_KEY */
     },
     async aiChat(_request: AiChatRequest): Promise<AiChatResponse> {
       throw new Error('aiChat not supported — use aiStream')
@@ -299,7 +299,7 @@ export function createDesktopApi(opts: WebRuntimeOpts): DesktopApi {
       return { loggedIn: false, email: undefined } as unknown as GenSparkAccountStatus
     },
     async aiGskLogin() {
-      /* Web auth flow not wired in v1 — operator configures GENOFFICE_GSK_KEY */
+      /* Web auth flow not wired in v1 — operator configures PRISMOFFICE_GSK_KEY */
     },
     async webSearch(query: string, maxResults?: number) {
       const res = await fetch('/ai/web-search', {
