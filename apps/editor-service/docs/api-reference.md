@@ -1,8 +1,8 @@
-# GenOffice Editor Service — Public API Reference
+# PrismOffice Editor Service — Public API Reference
 
 > **Version:** 1.0.0  
 > **License:** Apache-2.0  
-> **Shape:** Mirrors ONLYOFFICE Docs API for familiarity. Diverges where GenOffice's byte-preserving docx round-trip and pdfium-based PDF editing require it.
+> **Shape:** Mirrors ONLYOFFICE Docs API for familiarity. Diverges where PrismOffice's byte-preserving docx round-trip and pdfium-based PDF editing require it.
 
 ## Quick Start
 
@@ -32,7 +32,7 @@
       },
       token: '<JWT — see §3>',
     }
-    const editor = new GenOfficeAPI.DocEditor('placeholder', config)
+    const editor = new PrismOfficeAPI.DocEditor('placeholder', config)
   </script>
 </body>
 </html>
@@ -61,14 +61,14 @@
         data-editor-origin="https://editor.internal"></script>
 ```
 
-The SDK is a single ~10 KB IIFE bundle. It registers `window.GenOfficeAPI`.
+The SDK is a single ~10 KB IIFE bundle. It registers `window.PrismOfficeAPI`.
 
 The `data-editor-origin` attribute tells the SDK where the editor service runs. If omitted, the SDK derives it from the `<script>` element's `src` URL.
 
 ### Constructor
 
 ```js
-const editor = new GenOfficeAPI.DocEditor(placeholderId, config)
+const editor = new PrismOfficeAPI.DocEditor(placeholderId, config)
 ```
 
 | Parameter | Type | Description |
@@ -148,7 +148,7 @@ interface EditorConfig {
     logo?: { image?: string; url?: string; visible?: boolean }
     goback?: { url: string; text?: string }
     close?: { visible?: boolean }
-    ai?: { enabled?: boolean; model?: string }  // GenOffice-specific
+    ai?: { enabled?: boolean; model?: string }  // PrismOffice-specific
   }
 }
 ```
@@ -161,8 +161,8 @@ The editor service uses **HS256** with two secrets:
 
 | Secret | Direction | What it signs |
 |---|---|---|
-| `GENOFFICE_BROWSER_SECRET` | Browser → Editor Service | The entire config object (the `token` field) |
-| `GENOFFICE_OUTBOX_SECRET` | Editor Service → Host | Each server-side request to `document.url` and `callbackUrl` |
+| `PRISMOFFICE_BROWSER_SECRET` | Browser → Editor Service | The entire config object (the `token` field) |
+| `PRISMOFFICE_OUTBOX_SECRET` | Editor Service → Host | Each server-side request to `document.url` and `callbackUrl` |
 
 ### Signing the config (browser secret)
 
@@ -179,7 +179,7 @@ const token = await signConfig(
     document: { key: 'Khirz6zTPdfd7', url: 'https://host/files/abc', fileType: 'docx' },
     editorConfig: { mode: 'edit', callbackUrl: 'https://host/track' },
   },
-  process.env.GENOFFICE_BROWSER_SECRET,
+  process.env.PRISMOFFICE_BROWSER_SECRET,
 )
 // → 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkb2N1bWVudFR5cGUiOi...'
 ```
@@ -353,7 +353,7 @@ events: {
 
 ## 6. SDK Methods
 
-Available on the `editor` instance returned by `new GenOfficeAPI.DocEditor(...)`.
+Available on the `editor` instance returned by `new PrismOfficeAPI.DocEditor(...)`.
 
 | Method | Returns | Description |
 |---|---|---|
@@ -379,7 +379,7 @@ document: {
     download: true,   // default true. Download capability.
     print: true,      // default true. Print capability.
     copy: true,       // default true. Clipboard copy.
-    aiEdit: true,     // GenOffice-specific. AI panel visibility.
+    aiEdit: true,     // PrismOffice-specific. AI panel visibility.
   },
 }
 ```
@@ -398,9 +398,9 @@ The editor service reads configuration from environment variables:
 | Variable | Required | Default | Description |
 |---|---|---|---|
 | `PORT` | no | `3000` | HTTP listen port. |
-| `GENOFFICE_BROWSER_SECRET` | **yes** | `dev-browser-secret` (dev only) | HS256 secret for config JWTs. |
-| `GENOFFICE_OUTBOX_SECRET` | **yes** | `dev-outbox-secret` (dev only) | HS256 secret for service→host requests. |
-| `GENOFFICE_GSK_KEY` | no | — | Genspark API key for AI panel. If absent, AI returns "not configured". |
+| `PRISMOFFICE_BROWSER_SECRET` | **yes** | `dev-browser-secret` (dev only) | HS256 secret for config JWTs. |
+| `PRISMOFFICE_OUTBOX_SECRET` | **yes** | `dev-outbox-secret` (dev only) | HS256 secret for service→host requests. |
+| `PRISMOFFICE_GSK_KEY` | no | — | Genspark API key for AI panel. If absent, AI returns "not configured". |
 | `SAVED_URL_TTL_SEC` | no | `60` | TTL for `/saved/<id>` temp URLs (seconds). |
 
 ### Docker
@@ -408,12 +408,12 @@ The editor service reads configuration from environment variables:
 ```yaml
 services:
   editor-service:
-    image: genoffice/editor-service:1.0
+    image: prismoffice/editor-service:1.0
     ports: ['3000:3000']
     environment:
-      GENOFFICE_BROWSER_SECRET: your-browser-secret
-      GENOFFICE_OUTBOX_SECRET: your-outbox-secret
-      GENOFFICE_GSK_KEY: optional-gsk-key
+      PRISMOFFICE_BROWSER_SECRET: your-browser-secret
+      PRISMOFFICE_OUTBOX_SECRET: your-outbox-secret
+      PRISMOFFICE_GSK_KEY: optional-gsk-key
 ```
 
 ### Health check
@@ -434,7 +434,7 @@ GET /health
 const token = await signConfig(config, BROWSER_SECRET)
 
 // 2. Embed
-const editor = new GenOfficeAPI.DocEditor('placeholder', { ...config, token })
+const editor = new PrismOfficeAPI.DocEditor('placeholder', { ...config, token })
 
 // 3. Handle save callback (server-side)
 app.post('/track', async (req, res) => {
@@ -457,7 +457,7 @@ const config = {
   events: { onDocumentReady: () => console.log('viewing') },
   token: await signConfig(/* ... */),
 }
-new GenOfficeAPI.DocEditor('placeholder', config)
+new PrismOfficeAPI.DocEditor('placeholder', config)
 ```
 
 ### Pattern C: Embedded viewer (compact)
@@ -517,7 +517,7 @@ events: {
 | `POST` | `/save-document` | browser JWT | Iframe uploads new bytes → editor service fires callback to host. |
 | `GET` | `/saved/:id` | outbox JWT | Host fetches uploaded bytes (60s TTL). |
 | `GET` | `/ai/settings` | none | AI configuration status. |
-| `POST` | `/ai/stream` | browser JWT | Start AI streaming (SSE when `GENOFFICE_GSK_KEY` is set). |
+| `POST` | `/ai/stream` | browser JWT | Start AI streaming (SSE when `PRISMOFFICE_GSK_KEY` is set). |
 | `POST` | `/ai/stream-cancel` | browser JWT | Cancel in-flight stream. |
 | `POST` | `/ai/web-search` | browser JWT | Web search proxy. |
 | `POST` | `/ai/image-search` | browser JWT | Image search proxy. |
@@ -544,5 +544,5 @@ events: {
 - No real-time collaboration (planned for v2).
 - No offline capability (the editor service is stateless but online-only).
 - PDF text editing uses bundled fonts (Carlito/Caladea/Liberation/Noto CJK). System fonts are not available in the browser.
-- AI panel requires `GENOFFICE_GSK_KEY` configured on the editor service.
+- AI panel requires `PRISMOFFICE_GSK_KEY` configured on the editor service.
 - Mobile UI is not optimized (desktop browsers only).
