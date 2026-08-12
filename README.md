@@ -71,17 +71,17 @@ docker run -p 3000:3000 \
   -e PRISMOFFICE_BROWSER_SECRET=$(openssl rand -hex 32) \
   -e PRISMOFFICE_OUTBOX_SECRET=$(openssl rand -hex 32) \
   prismoffice
+```
 
-# 2. Embed in your page
+```html
+<!-- 2. Embed in your page -->
+<div id="placeholder"></div>
 <script src="https://editor.internal/sdk/genoffice.js"></script>
 <script>
-  const editor = new PrismOfficeAPI.DocEditor('placeholder', {
+  new PrismOfficeAPI.DocEditor('placeholder', {
     documentType: 'word',
-    document: { key: 'doc-1', url: 'https://your-app.com/files/doc-1.docx',
-                fileType: 'docx', title: 'Report.docx' },
-    editorConfig: { mode: 'edit', callbackUrl: 'https://your-app.com/track',
-                    user: { id: 'alice', name: 'Alice' } },
-    events: { onDocumentReady: () => console.log('loaded') },
+    document: { key: 'doc-1', url: 'https://your-app.com/files/doc-1.docx' },
+    editorConfig: { callbackUrl: 'https://your-app.com/track' },
     token: '<signed JWT — see INSTALLATION.md>',
   })
 </script>
