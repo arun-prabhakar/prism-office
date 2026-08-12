@@ -9,10 +9,9 @@
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 
 PrismOffice is a document editor you run on your own infrastructure and embed
-into your web application via an iframe + JavaScript SDK — the same deployment
-shape as ONLYOFFICE Docs or Collabora. Your users open and edit Word (`.docx`)
-and PDF (`.pdf`) documents right in the browser; the file never has to leave
-your environment.
+into your web application via an iframe + JavaScript SDK. Your users open and
+edit Word (`.docx`) and PDF (`.pdf`) documents right in the browser; the file
+never has to leave your environment.
 
 It is a web port of the [GenOffice](https://github.com/genspark-ai/genoffice)
 editing engines: the same byte-preserving `.docx` round trip and the same
