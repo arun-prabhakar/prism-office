@@ -5,17 +5,19 @@
  * renderer code is unchanged between desktop and web; only this bridge and
  * the entry HTML differ.
  *
- * PHASE 1 STATUS (no xlsx engine in-browser yet): the Rust sidecar does not
- * run, so every method that needs to parse/stream/recalc/save an xlsx throws
- * a clear "not supported on the web port (yet)" error. The boot-critical
- * methods (language, theme, "no queued workbook") are real so the renderer
- * mounts its chrome and Univer canvas. Opening a document will follow once
- * the in-browser xlsx path (small workbooks) or the wasm sidecar (large/
- * streamed workbooks) lands — see the sheets web-port plan.
+ * PHASE 1 STATUS: the in-browser xlsx engine (sheets-xlsx.ts, SheetJS) is
+ * wired for OPEN + VIEW — `selectWorkbook` fetches the document and parses it,
+ * `readWorkbookRange` serves cell values/formulas/merges for a range. The
+ * Rust sidecar does not run, so recalculation, save, media/pivot/chart reads,
+ * and style/conditional-formatting mapping still throw "not supported on the
+ * web port (yet)" — cells render their last cached file values. Large/streamed
+ * workbooks will eventually route through the wasm sidecar; this path targets
+ * small workbooks opened fully in-browser.
  */
 
 import type { DesktopApi, UiTheme } from '@prismoffice/sheets/shared/desktop-api'
 import type { EditorConfigRoot } from '@prismoffice/editor-contract'
+import { openWorkbook, readRange, sanitizeConfigForFetch } from './sheets-xlsx'
 
 type Lang = 'zh' | 'en' | 'ja' | 'ko' | 'fr' | 'de' | 'es' | 'th' | 'id' | 'ru' | 'ar'
 
@@ -60,12 +62,25 @@ export function createSheetsApi(opts: SheetsWebRuntimeOpts): DesktopApi {
       return false
     },
 
-    // --- xlsx engine surface: stubbed until the in-browser/wasm backend lands ---
+    // --- xlsx engine: OPEN + VIEW wired (Phase 1); recalc/save/etc. still stubbed ---
     async selectWorkbook() {
-      return unsupported('selectWorkbook')
+      const url = config.document?.url
+      if (!url) return null
+      try {
+        const res = await fetch('/fetch-document', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ config: sanitizeConfigForFetch(config) }),
+        })
+        if (!res.ok) return null
+        const bytes = await res.arrayBuffer()
+        return await openWorkbook(bytes, config.document?.title ?? 'workbook.xlsx')
+      } catch {
+        return null
+      }
     },
-    async readWorkbookRange() {
-      return unsupported('readWorkbookRange')
+    async readWorkbookRange(request) {
+      return readRange(request)
     },
     async readWorkbookFormulas() {
       return unsupported('readWorkbookFormulas')

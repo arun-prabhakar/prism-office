@@ -17,7 +17,8 @@
   "dependencies": {
     "@prismoffice/docs": "*",
     "@prismoffice/editor-contract": "*",
-    "@prismoffice/pdf": "*"
+    "@prismoffice/pdf": "*",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "typescript": "^5.9.3",
