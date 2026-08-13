@@ -3,83 +3,78 @@
 ## Reporting a Vulnerability
 
 Please report suspected vulnerabilities privately via GitHub's
-[private vulnerability reporting](https://github.com/genspark-ai/genoffice/security/advisories/new)
+[private vulnerability reporting](https://github.com/arun-prabhakar/prism-office/security/advisories/new)
 on this repository. Do not open public issues for security reports. We aim to
 acknowledge reports within 72 hours.
 
-## Process Security Posture
+## Security model
 
-All application windows run with the full Electron renderer lockdown:
+PrismOffice is a **self-hosted, embeddable document editor**. The integrator
+deploys the editor service in their own infrastructure and embeds it in their
+app via an iframe plus a JavaScript SDK. Documents are fetched from the
+integrator's own URL and saves are POSTed back to the integrator's
+`callbackUrl`; the service itself stores nothing.
 
-- `contextIsolation: true`, `nodeIntegration: false`, `sandbox: true` for every
-  document window and tab view (docs, sheets, slides, pdf, markdown, shell, updater).
-- Renderers reach the main process only through typed, validated IPC channels
-  (payloads are schema-checked in the main process; sheets uses zod end to end).
-- Every `shell.openExternal` call goes through a single shared gate
-  (`@prismoffice/electron-utils` → `safeExternalUrl`) that parses the URL and
-  enforces a protocol allowlist (http/https; pdf link annotations additionally
-  allow mailto). `file:`, `javascript:`, and custom schemes are always rejected.
-- No API keys are hardcoded. AI requests are proxied through the signed-in
-  account by default; user-supplied keys stay in the OS-level settings store.
+### Signed editor config (HS256 JWT)
 
-## Threat Model: AI-Generated Layout Scripts (slides)
+Every editor config handed to the iframe — document URL, callback URL,
+permissions, user identity — is **JWT-signed with `PRISMOFFICE_BROWSER_SECRET`**
+(HS256). The iframe honors a config only if its signature verifies against the
+service's browser secret. A tampered or stolen token therefore cannot:
 
-The slides AI can adjust slide layouts by emitting a small script that is
-parsed with Acorn and evaluated by a constrained AST interpreter
-(`apps/slides/src/renderer/ai/layout-script-interpreter.ts`). The source looks
-like a small, synchronous subset of JavaScript for model compatibility, but it
-is not passed to `eval`, `Function`, a VM context, a worker, or the JavaScript
-engine as executable source.
+- redirect a save to an attacker-controlled `callbackUrl`,
+- point the editor at a file the user should not reach, or
+- escalate permissions beyond what the integrator granted.
 
-**What the script can do by design:** read prototype-free JSON copies of
-`els`/`canvas`, perform bounded arithmetic/control flow, use explicitly
-implemented string/array/regular-expression/Math helpers, and call
-`setBox/moveBy/resizeBy/setText/setStyle/setFill/setStroke/log`. Every edit
-primitive validates its arguments (element existence, read-only flags, finite
-numbers, hex colors) and writes only into an op buffer that is applied through
-the same command pipeline as manual edits.
+### Two independent secrets
 
-**Interpreter boundary:**
+- `PRISMOFFICE_BROWSER_SECRET` — signs the config the browser iframe accepts.
+- `PRISMOFFICE_OUTBOX_SECRET` — signs the server-to-server requests the editor
+  service makes to fetch the document URL and to expose saved bytes
+  (`Authorization: Bearer <jwt>` on both).
 
-1. Identifiers resolve only in interpreter-owned lexical scopes seeded with the
-   documented data and callables. There are no ambient globals, module loader,
-   DOM, network, IPC bridge, timers, process APIs, or dynamic code primitives.
-2. Property reads are dispatched by value type. Data objects expose own JSON
-   fields only; arrays, strings, and regexes expose a small method allowlist.
-   Host prototypes and function properties are never traversed, including
-   through computed property names.
-3. Calls accept only interpreter-created functions or explicit builtins. A host
-   function obtained through a constructor/prototype chain cannot be
-   represented.
-4. Inputs and values crossing into edit primitives are recursively copied as
-   JSON-like, prototype-free data. Errors discard all buffered operations;
-   logs are capped.
-5. Execution has statement/expression and call-depth limits to bound runaway
-   loops or recursion.
+A leak of the browser secret does not compromise server-to-server requests, and
+vice-versa. Both must be kept secret. Rotation is "edit the env, restart the
+service, allow a brief overlap window" — there is no JWKS / key-id mechanism in
+v1, so plan the rotation window accordingly.
 
-The Electron renderer sandbox remains defense in depth, but it is not the
-layout-script security boundary. The interpreter is designed so a layout
-script cannot obtain renderer capabilities in the first place.
+### iframe + postMessage boundary
 
-If you find a way for a layout script to reach anything beyond the injected
-primitives (network, storage, IPC channels not reachable by design, or the
-main process), that is a vulnerability — please report it.
+- The editor runs inside an `<iframe>` loaded from the editor service origin.
+- The SDK ↔ iframe handshake uses `postMessage` and is **origin-checked** on
+  both sides: the host SDK only acts on messages whose `event.origin` matches
+  the editor service origin, and the iframe only accepts the `init` config from
+  the host page that loaded it.
+- The signed config is delivered by `postMessage` after the iframe signals
+  `app-ready` — **never in the iframe URL** — so it does not leak into Referer
+  headers or browser history.
 
-## Threat Model: Rendering AI-Generated HTML (slides export)
+### Stateless by design
 
-The HTML-to-pptx export pipeline renders AI-generated HTML in a hidden
-`BrowserWindow`. That window is treated as hostile content: full renderer
-lockdown (`sandbox: true`, `contextIsolation: true`, `nodeIntegration: false`),
-no preload script, no IPC surface — the main process drives it exclusively
-through `executeJavaScript` and destroys it under a watchdog timeout.
+The service does not persist documents. It GETs the document from the
+integrator's URL (presenting the outbox JWT), streams it to the iframe for the
+session, and POSTs save status — with a short-lived URL to fetch the saved
+bytes — back to the integrator's `callbackUrl`. A document is held only briefly
+in memory while a session is open.
 
-## Out of Scope
+## Threat model: document content
 
-- The cloud AI services this client talks to are operated separately and are
-  not part of this repository; issues with them should be reported through the
-  service provider's channels.
-- Vulnerabilities that require an already-compromised machine or a modified
-  binary. This includes the deliberate environment-variable override points
-  for local development (`GSK_CLI_PATH`, `XLSX_SIDECAR_PATH`): setting them
-  requires control of the process environment, which is equivalent to code
-  execution on the machine.
+`.docx` and `.pdf` files are untrusted input. They are parsed and rendered to
+the extent needed to stream them into the iframe; editing happens in the
+browser (Tiptap/ProseMirror for `.docx`, pdfium-wasm for `.pdf`). If you find a
+parse or render path that reaches code execution, host file access, or network
+access beyond the iframe sandbox, that is a vulnerability — please report it.
+
+## Out of scope
+
+- The integrator's host application — their `callbackUrl` handler, their file
+  storage, and their signing of editor configs. That boundary is the
+  integrator's responsibility.
+- Vulnerabilities that require an already-compromised editor-service host or a
+  modified service binary, including the deliberate environment-variable
+  override points (`PRISMOFFICE_BROWSER_SECRET`, `PRISMOFFICE_OUTBOX_SECRET`):
+  setting them requires control of the process environment, which is equivalent
+  to code execution on the host.
+- Desktop/Electron-only surfaces of the upstream engine packages (native
+  IPC, sidecar processes) are not part of this web service; reports about them
+  should go to the upstream project.
