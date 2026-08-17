@@ -14,7 +14,7 @@ export interface PickImageResult {
   name: string
 }
 
-// ---- AI provider settings/config/streaming: canonical types live in @prismoffice/ai-provider ----
+// ---- AI provider settings/config/streaming: canonical types live in @genoffice/ai-provider ----
 
 import type {
   AiChatRequest,
@@ -23,8 +23,8 @@ import type {
   AiStreamChunk,
   AiStreamRequest,
   GenSparkAccountStatus,
-} from '@prismoffice/ai-provider'
-import type { FaceVerticalMetrics } from '@prismoffice/font-metrics'
+} from '@genoffice/ai-provider'
+import type { FaceVerticalMetrics } from '@genoffice/font-metrics'
 
 export type { FaceVerticalMetrics }
 
@@ -38,17 +38,17 @@ export type {
   AiStreamChunk,
   AiStreamRequest,
   GenSparkAccountStatus,
-} from '@prismoffice/ai-provider'
-export { AI_PROVIDERS } from '@prismoffice/ai-provider'
+} from '@genoffice/ai-provider'
+export { AI_PROVIDERS } from '@genoffice/ai-provider'
 
-// ---- agent protocol: canonical types live in @prismoffice/agent-core ----
+// ---- agent protocol: canonical types live in @genoffice/agent-core ----
 
 export type {
   AgentMessage,
   AgentToolCall,
   AgentToolDef,
   AgentToolResult,
-} from '@prismoffice/agent-core'
+} from '@genoffice/agent-core'
 
 // ---- chat attachments (local files fed to the agent via tools) ----
 
@@ -133,6 +133,7 @@ export type MenuCommand =
   | 'print'
   | 'export-pdf'
   | 'word-count'
+  | 'ai-proofread'
 
 export type UiTheme = 'light' | 'dark' | 'system'
 
@@ -149,6 +150,9 @@ export interface DesktopApi {
   getTheme(): Promise<UiTheme>
   /** theme switched from the shell home page */
   onThemeChanged(handler: (theme: UiTheme) => void): () => void
+  /** press on the shell chrome (tab strip is a sibling WebContentsView whose
+   *  clicks produce no DOM event here) — dismiss open popovers */
+  onChromePressed(handler: () => void): () => void
   openDocx(): Promise<OpenFileResult | null>
   openDocxPath(path: string): Promise<OpenFileResult | null>
   /** mark the renderer ready and consume a file passed by Finder/Explorer at launch */
@@ -186,8 +190,8 @@ export interface DesktopApi {
   fontMetrics(family: string): Promise<FaceVerticalMetrics | null>
   getAiSettings(): Promise<AiSettings>
   setAiSettings(settings: AiSettings): Promise<void>
-  /** system print dialog for the current window */
-  print(): Promise<void>
+  /** system print dialog for the current window; ok=false without error = canceled */
+  print(): Promise<{ ok: boolean; error?: string }>
   /** render the document to PDF and ask where to save; size in twips.
    *  outPath is only honored when a previous export dialog chose that exact path */
   exportPdf(
@@ -272,6 +276,4 @@ export interface DesktopApi {
   reportCloseSaveResult(ok: boolean): void
   /** keep the native View menu's checkbox items in sync with renderer state */
   reportViewMenuState(state: { aiSidebar: boolean; darkCanvas: boolean }): void
-  /** editor mode from the host config: 'view' = read-only, 'edit' = full editing. Absent on desktop. */
-  getEditorMode?: () => Promise<'edit' | 'view'>
 }

@@ -34,6 +34,8 @@ window.addEventListener('message', async (event: MessageEvent) => {
   if (!msg || msg.type !== 'init') return
   const { config } = msg as unknown as InitPayload
   window.desktop = createDesktopApi({ config })
+  // Web-port marker read by the renderer to hide desktop-only chrome (AI dock).
+  window.__prismofficeWeb = true
   // Dynamically import so window.desktop is set BEFORE the renderer boots.
   await import('./main')
 })

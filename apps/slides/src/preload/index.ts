@@ -1,6 +1,6 @@
 import { contextBridge, ipcRenderer, webUtils } from 'electron'
 import type { IpcRendererEvent } from 'electron'
-import type { ProjectApi } from '@prismoffice/project-store'
+import type { ProjectApi } from '@genoffice/project-store'
 import type {
   AddChartOp,
   AddElementOp,
@@ -95,6 +95,14 @@ const api: SlidesApi = {
     ipcRenderer.on('app:theme-changed', listener)
     return () => ipcRenderer.removeListener('app:theme-changed', listener)
   },
+  onChromePressed: (handler) => {
+    const listener = () => handler()
+    ipcRenderer.on('app:chrome-pressed', listener)
+    return () => ipcRenderer.removeListener('app:chrome-pressed', listener)
+  },
+  setShowFullScreen: (on) => ipcRenderer.invoke('slides:show-fullscreen', on),
+  privateFontFaces: () => ipcRenderer.invoke('slides:private-font-faces'),
+  privateFontData: (id) => ipcRenderer.invoke('slides:private-font-data', id),
   openPptx: (fitWidthPx) => ipcRenderer.invoke('slides:open', fitWidthPx),
   openPptxPath: (path, fitWidthPx) => ipcRenderer.invoke('slides:open-path', path, fitWidthPx),
   consumePendingOpen: (fitWidthPx) => ipcRenderer.invoke('slides:consume-pending-open', fitWidthPx),

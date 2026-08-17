@@ -1,4 +1,4 @@
-# GenOffice editor service container image.
+# PrismOffice editor service container image.
 #
 # Self-hosted by customers (matches ONLYOFFICE Docs deployment shape).
 # Single Node process — horizontally scalable behind a sticky-session LB if

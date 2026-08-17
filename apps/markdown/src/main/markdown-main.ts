@@ -22,8 +22,8 @@ import {
   safeExternalUrl,
   showOpenDialogWithMemory,
   showSaveDialogWithMemory,
-} from '@prismoffice/electron-utils'
-import { createI18n, getUiLang } from '@prismoffice/i18n'
+} from '@genoffice/electron-utils'
+import { createI18n, getUiLang } from '@genoffice/i18n'
 import { atomicWriteFile } from './atomic-write'
 import { MARKDOWN_CHANNELS } from '../shared/ipc'
 import type {
@@ -322,6 +322,11 @@ export function setMarkdownDocxExportedHook(hook: (path: string) => void): void 
 /** Shell menu export entry: ask the renderer to serialize and run the export flow */
 export function sendMarkdownExportRequest(contents: WebContents, format: ExportFormat): void {
   if (!contents.isDestroyed()) contents.send(MARKDOWN_CHANNELS.exportRequest, format)
+}
+
+/** Shell menu Print: ask the renderer to build the print HTML and open the system dialog */
+export function sendMarkdownPrintRequest(contents: WebContents): void {
+  if (!contents.isDestroyed()) contents.send(MARKDOWN_CHANNELS.printRequest)
 }
 
 export function markdownIsDirty(webContentsId: number): boolean {
@@ -754,7 +759,7 @@ export function createMarkdownView(openPath?: string | null): WebContentsView {
   return view
 }
 
-/** Standalone window mode: `npm run dev -w @prismoffice/markdown`, md path passed via argv */
+/** Standalone window mode: `npm run dev -w @genoffice/markdown`, md path passed via argv */
 export function startMarkdownStandalone(): void {
   installNavigationGuard(app)
   installContextMenu(app, () => contextMenuLabels(getUiLang()))

@@ -1,7 +1,7 @@
 /**
  * @prismoffice/editor-contract
  *
- * Typed contract for the GenOffice embeddable editor. Mirrors the ONLYOFFICE
+ * Typed contract for the PrismOffice embeddable editor. Mirrors the ONLYOFFICE
  * Docs API shape (config / events / callback handler / JWT) so integrators
  * familiar with ONLYOFFICE can adopt ours with minimal relearning.
  *
@@ -27,7 +27,7 @@ export type EditorType = 'desktop' | 'mobile' | 'embedded'
 // ---------------------------------------------------------------------------
 
 /**
- * v1 permission set. Subset of ONLYOFFICE's; adds `aiEdit` (GenOffice-specific
+ * v1 permission set. Subset of ONLYOFFICE's; adds `aiEdit` (PrismOffice-specific
  * — gates the AI panel).
  *
  * Defaults follow ONLYOFFICE: `edit/review/comment/fillForms` default true;
@@ -48,7 +48,7 @@ export interface Permissions {
   print?: boolean
   /** Copy to clipboard. */
   copy?: boolean
-  /** GenOffice-specific: show the AI panel. */
+  /** PrismOffice-specific: show the AI panel. */
   aiEdit?: boolean
 }
 
@@ -114,7 +114,7 @@ export interface Customization {
   goback?: { url: string; text?: string; blank?: boolean }
   /** Close button on the editor; requires `onRequestClose` event to show. */
   close?: { visible?: boolean; text?: string }
-  /** GenOffice-specific: AI panel config. */
+  /** PrismOffice-specific: AI panel config. */
   ai?: { enabled?: boolean; sidebar?: boolean; model?: string }
   /** Editor chrome theme. Document content stays fixed; only the surrounding UI follows. */
   uiTheme?: 'light' | 'dark'
@@ -203,7 +203,7 @@ export interface EditorEvents {
 // ---------------------------------------------------------------------------
 
 /**
- * The full editor config object passed to `new GenOfficeAPI.DocEditor(id, config)`.
+ * The full editor config object passed to `new PrismOfficeAPI.DocEditor(id, config)`.
  *
  * Required: `document.url`, `document.fileType` (or `documentType`), `document.key`.
  *

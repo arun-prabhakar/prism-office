@@ -128,6 +128,7 @@ export async function openWorkbook(bytes: ArrayBuffer, name: string): Promise<Wo
     name,
     sha256: await sha256Hex(bytes),
     entryCount: 0,
+    activeTab: 0,
     sheets: sheetMeta,
     styles: [],
     dxfStyles: [],
@@ -179,6 +180,9 @@ export function readRange(request: WorkbookRangeRequest): WorkbookRangeResult {
     autoFilter: null,
     dataValidations: [],
     sheetProtection: null,
+    rowBreaks: [],
+    colBreaks: [],
+    protectedRanges: [],
     indexedThroughRow: endRow,
     indexingComplete: true,
   }

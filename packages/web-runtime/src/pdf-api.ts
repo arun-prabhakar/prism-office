@@ -167,13 +167,60 @@ export function createPdfApi(opts: PdfWebRuntimeOpts): PdfApi {
     // Page operations — stubs (Phase 3.1)
     // -------------------------------------------------------------------------
     async extractPages(_request: ExtractPagesRequest): Promise<ExtractPagesResult> {
-      return { ok: true, canceled: true }
+      return { ok: false, error: 'not supported on the web port (yet)' }
     },
     async insertPdf(_request: InsertPdfRequest): Promise<InsertPdfResult> {
       return { ok: true, canceled: true }
     },
+    async insertBlankPage() {
+      return { ok: false, error: 'not supported on the web port (yet)' }
+    },
+    async splitPdf() {
+      return { ok: true, canceled: true }
+    },
+    async mergePdf() {
+      return { ok: true, canceled: true }
+    },
+    async mergePages() {
+      return { ok: true, canceled: true }
+    },
+    async replacePages() {
+      return { ok: true, canceled: true }
+    },
+    async setPageSize() {
+      return { ok: false, error: 'not supported on the web port (yet)' }
+    },
+    async splitPages() {
+      return { ok: false, error: 'not supported on the web port (yet)' }
+    },
+    async cropPages() {
+      return { ok: false, error: 'not supported on the web port (yet)' }
+    },
     async exportImages(_request: ExportImagesRequest): Promise<ExportImagesResult> {
       return { ok: true, canceled: true }
+    },
+
+    // -------------------------------------------------------------------------
+    // Saved signatures — userData persistence has no web analog; the panel
+    // sees an empty list and adds/removes are no-ops.
+    // -------------------------------------------------------------------------
+    async listSavedSignatures() {
+      return []
+    },
+    async addSavedSignature() {
+      return []
+    },
+    async removeSavedSignature() {
+      return []
+    },
+    async getUsername() {
+      return ''
+    },
+    onChromePressed() {
+      return () => {}
+    },
+    onPrintRequest() {
+      return () => {}
     },
 
     // -------------------------------------------------------------------------

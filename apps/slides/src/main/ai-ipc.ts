@@ -4,12 +4,13 @@
  * to avoid renderer CORS), search tools, and the slides-only ai:* channels
  * (image generation, media analysis, style templates).
  */
-import { app, ipcMain, net, shell } from 'electron'
+import { app, ipcMain, nativeImage, net, shell } from 'electron'
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import {
   AiCreditsError,
   AiTimeoutError,
+  isAiNetworkError,
   defaultAiSettings,
   resolveAiSettings,
   setRescueFetch,
@@ -19,8 +20,8 @@ import {
   type AiStreamRequest,
   type GenSparkAccountStatus,
   type LegacyAiSettings,
-} from '@prismoffice/ai-provider'
-import { fetchRemoteImage } from '@prismoffice/electron-utils'
+} from '@genoffice/ai-provider'
+import { fetchRemoteImage } from '@genoffice/electron-utils'
 import {
   webSearch,
   imageSearch,
@@ -30,13 +31,14 @@ import {
   gskAnalyzeMedia,
   gskLoginInfo,
   hasGskAuth,
-} from '@prismoffice/ai-search'
-import { addPicture, replacePictureBytes } from '@prismoffice/pptx-engine'
-import { EMU_PER_PX_96 } from '@prismoffice/pptx-render'
+} from '@genoffice/ai-search'
+import { addPicture, editPictureSrcRect, replacePictureBytes } from '@genoffice/pptx-engine'
+import { coverCropFractions } from '../shared/cover-crop'
+import { EMU_PER_PX_96 } from '@genoffice/pptx-render'
 import { tm } from './i18n-main'
 import { pushHistory, rebuildSlide, scheduleHistoryNotify, sessions } from './session-state'
 
-// ---- AI settings + streaming proxy (the main process does the networking to avoid renderer CORS; implementation shared via @prismoffice/ai-provider) ----
+// ---- AI settings + streaming proxy (the main process does the networking to avoid renderer CORS; implementation shared via @genoffice/ai-provider) ----
 
 const AI_SETTINGS_PATH = () => join(app.getPath('userData'), 'ai-settings.json')
 
@@ -144,7 +146,9 @@ export function registerAiIpc(): void {
             ? { errorCode: 'timeout' as const }
             : err instanceof AiCreditsError
               ? { errorCode: 'credits' as const }
-              : {}),
+              : isAiNetworkError(err)
+                ? { errorCode: 'network' as const }
+                : {}),
         })
       }
     } finally {
@@ -275,6 +279,12 @@ export function registerSlidesOnlyAiIpc(): void {
           scheduleHistoryNotify(session)
           return null
         }
+        // The requested frame rarely matches the image's aspect ratio; never
+        // stretch — fill the frame and center-crop the overflow (object-fit:
+        // cover) so the layout box stays exactly where the model placed it.
+        const natural = nativeImage.createFromBuffer(buf).getSize()
+        const crop = coverCropFractions(natural.width, natural.height, op.wPx, op.hPx)
+        if (crop) editPictureSrcRect(slide, el.id, crop)
         session.fitWidthPx = op.fitWidthPx
         const rebuilt = rebuildSlide(session, op.slideIndex)
         return rebuilt ? { slide: rebuilt, sourceId: el.id } : null
@@ -312,6 +322,19 @@ export function registerSlidesOnlyAiIpc(): void {
           session.undoStack.pop()
           scheduleHistoryNotify(session)
           return null
+        }
+        // A replacement with a different aspect ratio would be stretched into
+        // the surviving frame — center-crop it to cover the frame instead.
+        if (!op.keepSrcRect) {
+          const pic = slide.elements.find(
+            (el) => el.id === String(op.sourceId) && el.type === 'picture',
+          )
+          const frame = pic?.transform?.offset
+          if (frame) {
+            const natural = nativeImage.createFromBuffer(buf).getSize()
+            const crop = coverCropFractions(natural.width, natural.height, frame.cx, frame.cy)
+            if (crop) editPictureSrcRect(slide, String(op.sourceId), crop)
+          }
         }
         return rebuildSlide(session, op.slideIndex)
       } catch {

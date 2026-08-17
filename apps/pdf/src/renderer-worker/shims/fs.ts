@@ -33,3 +33,5 @@ export function closeSync(): void {}
 export function readSync(): number {
   return 0
 }
+export function mkdirSync(): void {}
+export function writeFileSync(): void {}

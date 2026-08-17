@@ -55,7 +55,6 @@ export function createDesktopApi(opts: WebRuntimeOpts): DesktopApi {
     })
 
   const lang = (config.editorConfig?.lang as Lang | undefined) ?? 'en'
-  const editorMode = (config.editorConfig?.mode ?? 'edit') as 'edit' | 'view'
   const theme = ((config.editorConfig as any)?.customization?.uiTheme ?? 'light') as UiTheme
   const aiSettings: AiSettings = {
     provider: (config.editorConfig?.customization?.ai?.model as AiSettings['provider']) ?? 'claude',
@@ -83,9 +82,6 @@ export function createDesktopApi(opts: WebRuntimeOpts): DesktopApi {
     },
     onThemeChanged() {
       return () => {}
-    },
-    async getEditorMode() {
-      return editorMode
     },
     async fontMetrics(_family: string) {
       return null
@@ -233,6 +229,7 @@ export function createDesktopApi(opts: WebRuntimeOpts): DesktopApi {
     // -------------------------------------------------------------------------
     async print() {
       window.print()
+      return { ok: true as const }
     },
     async exportPdf(_defaultName, _w, _h, _outPath) {
       // Phase 2: trigger browser print → user picks "Save as PDF".

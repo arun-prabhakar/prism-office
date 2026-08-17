@@ -1,4 +1,4 @@
-/** Main-process i18n strings for GenOffice Slides (dialogs, native menus, export, autosave prompts). */
+/** Main-process i18n strings for PrismOffice Slides (dialogs, native menus, export, autosave prompts). */
 import { createI18n, getUiLang } from '@prismoffice/i18n'
 
 export const tMain = createI18n({

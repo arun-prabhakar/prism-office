@@ -9,20 +9,24 @@ export default defineConfig({
   resolve: {
     alias: {
       // Subpath before the bare name: string aliases are prefix replacements
-      '@prismoffice/pptx-engine/table-grid': resolve(
+      '@genoffice/pptx-engine/table-grid': resolve(
         here,
         '../../packages/pptx-engine/src/table-grid.ts',
       ),
-      '@prismoffice/pptx-engine/background-promote': resolve(
+      '@genoffice/pptx-engine/background-promote': resolve(
         here,
         '../../packages/pptx-engine/src/background-promote.ts',
       ),
-      '@prismoffice/pptx-engine': resolve(here, '../../packages/pptx-engine/src/index.ts'),
-      '@prismoffice/pptx-render/preset-geometry': resolve(
+      '@genoffice/pptx-engine': resolve(here, '../../packages/pptx-engine/src/index.ts'),
+      '@genoffice/pptx-render/preset-geometry': resolve(
         here,
         '../../packages/pptx-render/src/preset-geometry.ts',
       ),
-      '@prismoffice/pptx-render': resolve(here, '../../packages/pptx-render/src/index.ts'),
+      '@genoffice/pptx-render': resolve(here, '../../packages/pptx-render/src/index.ts'),
+      '@genoffice/docx-engine/metafile': resolve(
+        here,
+        '../../packages/docx-engine/src/metafile.ts',
+      ),
     },
   },
   test: {

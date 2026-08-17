@@ -1,4 +1,4 @@
-import { createIpcTransport, type AgentTransport } from '@prismoffice/agent-core'
+import { createIpcTransport, type AgentTransport } from '@genoffice/agent-core'
 import type { AiSettings } from '../../shared/ipc'
 import { t } from '../i18n/locale'
 
@@ -12,5 +12,6 @@ export function createElectronTransport(getSettings: () => AiSettings): AgentTra
     unknownErrorText: () => t('aiErrUnknown'),
     timeoutErrorText: () => t('aiErrStreamTimeout'),
     creditsErrorText: () => t('aiCreditsExhausted'),
+    networkErrorText: () => t('aiErrNetwork'),
   })
 }

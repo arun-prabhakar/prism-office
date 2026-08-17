@@ -17,7 +17,7 @@ import { gskImageSearch, gskWebSearch, hasGskAuth } from './gsk'
 
 export type { ImageSearchResult, WebSearchResult } from './shared'
 export * from './gsk'
-export * from './prismoffice-auth'
+export * from './genoffice-auth'
 
 const SERPER_KEY = () => process.env.SERPER_API_KEY ?? ''
 

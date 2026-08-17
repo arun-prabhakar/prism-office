@@ -4,7 +4,7 @@
   "license": "Apache-2.0",
   "private": true,
   "type": "module",
-  "description": "Self-hosted GenOffice embeddable editor service. Stateless proxy + static host for the docs/pdf editor SPAs. Customer deploys this Docker container; their host app embeds via the JS SDK.",
+  "description": "Self-hosted PrismOffice embeddable editor service. Stateless proxy + static host for the docs/pdf editor SPAs. Customer deploys this Docker container; their host app embeds via the JS SDK.",
   "scripts": {
     "typecheck": "tsc --noEmit",
     "test": "vitest run",

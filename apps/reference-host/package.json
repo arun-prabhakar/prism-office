@@ -4,7 +4,7 @@
   "license": "Apache-2.0",
   "private": true,
   "type": "module",
-  "description": "Reference host app for the GenOffice editor service. Vite + React + minimal Express backend. Integrators copy this pattern; it is documentation-as-code, not a product.",
+  "description": "Reference host app for the PrismOffice editor service. Vite + React + minimal Express backend. Integrators copy this pattern; it is documentation-as-code, not a product.",
   "scripts": {
     "typecheck": "tsc --noEmit",
     "test": "vitest run",

@@ -4,8 +4,13 @@ import { App } from './App'
 import { LocaleProvider, setModuleLang } from './i18n/locale'
 import type { UiTheme } from '../shared/ipc'
 import '@prismoffice/ui/tokens.css'
+import '@prismoffice/ui/screentip.css'
+import '@prismoffice/ui/color-picker.css'
 import './styles.css'
 import './fonts/fonts.css'
+import { installScreenTips } from '@prismoffice/ui'
+
+installScreenTips()
 
 function applyTheme(theme: UiTheme): void {
   if (theme === 'system') document.documentElement.removeAttribute('data-theme')

@@ -1,4 +1,4 @@
-import type { AgentMessage, AgentToolCall, AgentToolDef } from '@prismoffice/agent-core'
+import type { AgentMessage, AgentToolCall, AgentToolDef } from '@genoffice/agent-core'
 
 export type AiProviderId = 'genspark' | 'anthropic' | 'gemini' | 'deepseek' | 'openai' | 'custom'
 
@@ -65,8 +65,8 @@ export interface AiStreamChunk {
   /** complete parsed tool call (emitted once its arguments finish streaming) */
   toolCall?: AgentToolCall
   error?: string
-  /** machine-readable error cause ('timeout', exhausted 'credits'); lets the renderer localize the message */
-  errorCode?: 'timeout' | 'credits'
+  /** machine-readable error cause ('timeout', exhausted 'credits', 'network' connectivity failure); lets the renderer localize the message */
+  errorCode?: 'timeout' | 'credits' | 'network'
   /** normalized stop reason carried on 'done' ('max_tokens' = output cut off by the token limit) */
   stopReason?: string
 }

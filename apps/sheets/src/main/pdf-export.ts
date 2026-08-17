@@ -8,7 +8,7 @@ import { join } from 'node:path'
 
 import { BrowserWindow, dialog } from 'electron'
 
-import { showSaveDialogWithMemory } from '@prismoffice/electron-utils'
+import { showSaveDialogWithMemory } from '@genoffice/electron-utils'
 
 import type { IpcMainInvokeEvent } from 'electron'
 import type { WorkbookExportPdfRequest, WorkbookExportPdfResult } from '../shared/desktop-api'

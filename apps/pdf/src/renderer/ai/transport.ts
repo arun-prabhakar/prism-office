@@ -1,5 +1,5 @@
-import { createIpcTransport, type AgentTransport } from '@prismoffice/agent-core'
-import type { AiSettings } from '@prismoffice/ai-provider'
+import { createIpcTransport, type AgentTransport } from '@genoffice/agent-core'
+import type { AiSettings } from '@genoffice/ai-provider'
 import { t } from '../i18n/locale'
 
 /** The shared IPC transport wired to the pdf preload bridge (window.pdfApi). */
@@ -12,5 +12,6 @@ export function createElectronTransport(getSettings: () => AiSettings): AgentTra
     unknownErrorText: () => t('aiUnknownError'),
     timeoutErrorText: () => t('aiTimeoutError'),
     creditsErrorText: () => t('aiCreditsExhausted'),
+    networkErrorText: () => t('aiNetworkError'),
   })
 }

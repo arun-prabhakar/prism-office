@@ -1,6 +1,6 @@
 {
   "name": "@prismoffice/docs",
-  "productName": "GenOffice Docs",
+  "productName": "PrismOffice Docs",
   "version": "0.1.0",
   "license": "Apache-2.0",
   "private": true,
@@ -12,8 +12,8 @@
   "scripts": {
     "dev": "electron-vite dev",
     "dev:renderer": "vite --config vite.renderer.config.ts",
-    "build": "electron-vite build",
     "build:web": "vite build --config vite.web.config.ts",
+    "build": "electron-vite build",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -27,12 +27,9 @@
     "@prismoffice/ai-provider": "*",
     "@prismoffice/ai-search": "*",
     "@prismoffice/docx-engine": "*",
-    "@prismoffice/editor-contract": "*",
     "@prismoffice/file-parse": "*",
     "@prismoffice/project-store": "*",
-    "@prismoffice/sdk-shared": "*",
     "@prismoffice/ui": "*",
-    "@prismoffice/web-runtime": "*",
     "@tiptap/core": "^3.28.0",
     "@tiptap/extensions": "^3.28.0",
     "@tiptap/pm": "^3.28.0",
@@ -53,10 +50,10 @@
     "vite": "^7.3.1",
     "vitest": "^4.1.0"
   },
-  "author": "GenOffice",
+  "author": "PrismOffice",
   "build": {
     "appId": "com.genoffice.docs",
-    "productName": "GenOffice Docs",
+    "productName": "PrismOffice Docs",
     "electronVersion": "43.3.0",
     "artifactName": "AIDocx-${version}-${arch}.${ext}",
     "directories": {

@@ -195,6 +195,26 @@ export function createSheetsApi(opts: SheetsWebRuntimeOpts): DesktopApi {
     async webSearch() {
       return unsupported('webSearch')
     },
+    async imageSearch(query, maxResults) {
+      const res = await fetch('/ai/image-search', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query, maxResults }),
+      })
+      return await res.json()
+    },
+    async generateImage() {
+      return unsupported('generateImage')
+    },
+    async fetchImage(url) {
+      const res = await fetch('/ai/fetch-image', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url }),
+      })
+      if (!res.ok) return null
+      return await res.json()
+    },
     onAiStream() {
       return noop
     },

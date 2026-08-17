@@ -1,6 +1,6 @@
 /** Insert tab of the slides ribbon. Extracted from Ribbon.tsx. */
 import type { InsertKind } from '../../shared/ipc'
-import { WORDART_PRESETS, wordArtStrokePx } from '@prismoffice/ui'
+import { WORDART_PRESETS, wordArtStrokePx } from '@genoffice/ui'
 import {
   CHART_GALLERY,
   ICON_COLORS,
@@ -92,13 +92,15 @@ export function RibbonInsertTab({ rb }: { rb: RibbonTabCtx }) {
       <Group label={t('ribbonGroupSlides')}>
         <div className="rb-drop-wrap">
           <button
-            className="rb-big"
+            className="rb-big rb-split"
             disabled={!hasDoc}
             onClick={onAddSlide}
             data-tip={t('ribbonNewSlideTip')}
           >
             <span className="rb-big-icon">
-              <IconNewSlide size={BIG} />
+              <span className="rb-split-main">
+                <IconNewSlide size={BIG} />
+              </span>
               <span
                 className={`rb-caret-hit${layoutOpen ? ' active' : ''}`}
                 data-tip={t('ribbonChooseLayoutNew')}

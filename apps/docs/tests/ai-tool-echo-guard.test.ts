@@ -5,7 +5,7 @@ import {
   BLANK_ORDERED_NUM_ID,
   buildBlankDocx,
   parseDocx,
-} from '@prismoffice/docx-engine'
+} from '@genoffice/docx-engine'
 import { blocksToPmDoc } from '../src/renderer/editor/convert'
 import { executeTool } from '../src/renderer/ai/tools'
 

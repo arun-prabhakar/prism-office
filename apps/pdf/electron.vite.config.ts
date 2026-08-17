@@ -12,21 +12,21 @@ const pdfjsRoot = dirname(dirname(require.resolve('pdfjs-dist/package.json')))
 const pdfjsDir = (sub: string) => normalizePath(join(pdfjsRoot, 'pdfjs-dist', sub))
 
 export default defineConfig({
-  // @prismoffice/i18n ships as TS source; pdf-lib's package only includes out/** — both must be bundled
+  // @genoffice/i18n ships as TS source; pdf-lib's package only includes out/** — both must be bundled
   main: {
     plugins: [
       externalizeDepsPlugin({
         exclude: [
-          '@prismoffice/i18n',
+          '@genoffice/i18n',
           'pdf-lib',
-          '@prismoffice/electron-utils',
-          '@prismoffice/font-metrics',
+          '@genoffice/electron-utils',
+          '@genoffice/font-metrics',
         ],
       }),
     ],
   },
   preload: {
-    plugins: [externalizeDepsPlugin({ exclude: ['@prismoffice/i18n'] })],
+    plugins: [externalizeDepsPlugin({ exclude: ['@genoffice/i18n'] })],
   },
   renderer: {
     plugins: [

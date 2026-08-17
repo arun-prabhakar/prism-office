@@ -1,6 +1,6 @@
 {
   "name": "@prismoffice/pdf",
-  "productName": "GenOffice PDF",
+  "productName": "PrismOffice PDF",
   "version": "0.1.0",
   "license": "Apache-2.0",
   "private": true,
@@ -12,8 +12,8 @@
   "scripts": {
     "dev": "electron-vite dev",
     "dev:renderer": "vite --config vite.renderer.config.ts",
-    "build": "electron-vite build",
     "build:web": "vite build --config vite.web.config.ts",
+    "build": "electron-vite build",
     "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },
@@ -22,17 +22,13 @@
     "@prismoffice/agent-core": "*",
     "@prismoffice/ai-provider": "*",
     "@prismoffice/ai-search": "*",
-    "@prismoffice/editor-contract": "*",
     "@prismoffice/electron-utils": "*",
     "@prismoffice/font-metrics": "*",
     "@prismoffice/i18n": "*",
-    "@prismoffice/sdk-shared": "*",
     "@prismoffice/ui": "*",
-    "@prismoffice/web-runtime": "*",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.0.4",
-    "buffer": "^6.0.3",
     "electron": "^43.3.0",
     "electron-vite": "^5.0.0",
     "harfbuzzjs": "^0.10.3",
@@ -46,5 +42,8 @@
     "vite-plugin-static-copy": "^3.0.0",
     "vitest": "^4.1.10"
   },
-  "author": "GenOffice"
+  "author": "PrismOffice",
+  "dependencies": {
+    "buffer": "^6.0.3"
+  }
 }

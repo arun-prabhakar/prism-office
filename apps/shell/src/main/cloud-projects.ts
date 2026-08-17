@@ -1,6 +1,6 @@
 import { readFileSync, unlinkSync, writeFileSync } from 'node:fs'
 import { createHash } from 'node:crypto'
-import { gskApiKey, gskListPastProjects, hasGskAuth } from '@prismoffice/ai-search'
+import { gskApiKey, gskListPastProjects, hasGskAuth } from '@genoffice/ai-search'
 import type { CloudProjectEntry, CloudProjectKind, CloudProjectsSnapshot } from '../shared/home-api'
 
 const SYNC_PAGE = 100

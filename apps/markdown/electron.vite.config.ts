@@ -19,12 +19,12 @@ const TIPTAP_DEDUPE = [
 ]
 
 export default defineConfig({
-  // @prismoffice/i18n and @prismoffice/electron-utils ship as TS source — must be bundled
+  // @genoffice/i18n and @genoffice/electron-utils ship as TS source — must be bundled
   main: {
-    plugins: [externalizeDepsPlugin({ exclude: ['@prismoffice/i18n', '@prismoffice/electron-utils'] })],
+    plugins: [externalizeDepsPlugin({ exclude: ['@genoffice/i18n', '@genoffice/electron-utils'] })],
   },
   preload: {
-    plugins: [externalizeDepsPlugin({ exclude: ['@prismoffice/i18n'] })],
+    plugins: [externalizeDepsPlugin({ exclude: ['@genoffice/i18n'] })],
   },
   renderer: {
     plugins: [react()],

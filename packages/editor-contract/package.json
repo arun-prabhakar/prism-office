@@ -4,7 +4,7 @@
   "license": "Apache-2.0",
   "private": true,
   "type": "module",
-  "description": "Typed config / event / callback contract for the GenOffice embeddable editor (mirrors ONLYOFFICE Docs API shape)",
+  "description": "Typed config / event / callback contract for the PrismOffice embeddable editor (mirrors ONLYOFFICE Docs API shape)",
   "exports": {
     ".": "./src/index.ts"
   },

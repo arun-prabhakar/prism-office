@@ -1,7 +1,7 @@
 /**
  * @prismoffice/sdk-shared
  *
- * The GenOffice editor SDK, served to integrators at `/sdk/prismoffice.js`.
+ * The PrismOffice editor SDK, served to integrators at `/sdk/prismoffice.js`.
  *
  * Shape mirrors ONLYOFFICE's DocsAPI.DocEditor so integrators familiar with
  * that ecosystem can adopt ours with minimal relearning.
@@ -67,7 +67,7 @@ export class DocEditor {
     const errors = validateConfig(config)
     if (errors.length > 0) {
       // ONLYOFFICE uses window.alert; we do the same for parity.
-      const msg = `GenOffice DocEditor: invalid config — ${errors.join('; ')}`
+      const msg = `PrismOffice DocEditor: invalid config — ${errors.join('; ')}`
       if (typeof window !== 'undefined' && typeof window.alert === 'function') {
         window.alert(msg)
       }
@@ -78,7 +78,7 @@ export class DocEditor {
 
     const placeholder = document.getElementById(placeholderId)
     if (!placeholder) {
-      throw new Error(`GenOffice DocEditor: placeholder "#${placeholderId}" not found`)
+      throw new Error(`PrismOffice DocEditor: placeholder "#${placeholderId}" not found`)
     }
 
     this.iframe = createIframe(this.editorOrigin, config)
@@ -289,7 +289,7 @@ function createIframe(editorOrigin: string, config: EditorConfigRoot): HTMLIFram
  */
 function resolveEditorOrigin(): string {
   if (typeof document === 'undefined') {
-    throw new Error('GenOffice DocEditor must be constructed in a browser context')
+    throw new Error('PrismOffice DocEditor must be constructed in a browser context')
   }
   // Prefer the explicit data-editor-origin attribute on the SDK script.
   const scripts = document.querySelectorAll<HTMLScriptElement>(

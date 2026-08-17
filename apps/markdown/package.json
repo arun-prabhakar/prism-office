@@ -1,5 +1,5 @@
 {
-  "name": "@prismoffice/markdown",
+  "name": "@genoffice/markdown",
   "productName": "GenOffice Markdown",
   "version": "0.1.0",
   "license": "Apache-2.0",
@@ -14,13 +14,13 @@
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
-    "@prismoffice/agent-core": "*",
-    "@prismoffice/ai-provider": "*",
-    "@prismoffice/docx-engine": "*",
-    "@prismoffice/electron-utils": "*",
-    "@prismoffice/i18n": "*",
-    "@prismoffice/project-store": "*",
-    "@prismoffice/ui": "*",
+    "@genoffice/agent-core": "*",
+    "@genoffice/ai-provider": "*",
+    "@genoffice/docx-engine": "*",
+    "@genoffice/electron-utils": "*",
+    "@genoffice/i18n": "*",
+    "@genoffice/project-store": "*",
+    "@genoffice/ui": "*",
     "@tiptap/core": "3.29.2",
     "@tiptap/extension-code-block": "3.29.2",
     "@tiptap/extension-image": "3.29.2",

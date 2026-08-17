@@ -7,7 +7,7 @@
  * port intact: every zip entry except `word/document.xml` must be byte-identical,
  * and the document.xml diff must be small (localized to the edited paragraph).
  *
- * This is the core GenOffice guarantee — "Word never notices" — proven through
+ * This is the core PrismOffice guarantee — "Word never notices" — proven through
  * the full web stack (SDK → iframe → Tiptap → docx-engine.patch → /save-document
  * → host callback → host persistence).
  */

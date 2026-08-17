@@ -25,7 +25,7 @@ import {
   type ImageSearchResult,
   type WebSearchResult,
 } from './shared'
-import { genofficeApiKey } from './prismoffice-auth'
+import { genofficeApiKey } from './genoffice-auth'
 
 const SEARCH_TIMEOUT_MS = 60_000
 const GENERATE_TIMEOUT_MS = 600_000
