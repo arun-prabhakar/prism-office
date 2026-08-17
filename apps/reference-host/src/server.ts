@@ -74,6 +74,22 @@ async function seedFixture(): Promise<void> {
     bytes: pdfBytes,
     versions: [pdfBytes],
   })
+  const XLSX = await import('xlsx')
+  const workbook = XLSX.utils.book_new()
+  const sheet = XLSX.utils.aoa_to_sheet([
+    ['Item', 'Qty', 'Price', 'Total'],
+    ['Notebook', 4, 3.5, { f: 'B2*C2' }],
+    ['Pen', 10, 1.25, { f: 'B3*C3' }],
+    ['Total', '', '', { f: 'SUM(D2:D3)' }],
+  ])
+  XLSX.utils.book_append_sheet(workbook, sheet, 'Sheet1')
+  const xlsxBytes = new Uint8Array(XLSX.write(workbook, { bookType: 'xlsx', type: 'array' }))
+  files.set('fixture-sheet', {
+    name: 'sample.xlsx',
+    filetype: 'xlsx',
+    bytes: xlsxBytes,
+    versions: [xlsxBytes],
+  })
 }
 
 await seedFixture()

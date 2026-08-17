@@ -16,6 +16,7 @@
  */
 
 import type { DesktopApi, UiTheme } from '@prismoffice/sheets/shared/desktop-api'
+import type { AiSettings, GenSparkAccountStatus } from '@prismoffice/ai-provider'
 import type { EditorConfigRoot } from '@prismoffice/editor-contract'
 import { openWorkbook, readRange, sanitizeConfigForFetch } from './sheets-xlsx'
 
@@ -23,6 +24,10 @@ type Lang = 'zh' | 'en' | 'ja' | 'ko' | 'fr' | 'de' | 'es' | 'th' | 'id' | 'ru' 
 
 interface SheetsWebRuntimeOpts {
   config: EditorConfigRoot
+  /** Optional sink for SDK events the web client should fire at the host
+   *  (onDocumentReady / onDocumentStateChange). Defaults to postMessage to
+   *  window.parent. */
+  postSdkEvent?: (name: string, data?: unknown) => void
 }
 
 const unsupported = (name: string): never => {
@@ -31,10 +36,18 @@ const unsupported = (name: string): never => {
 
 export function createSheetsApi(opts: SheetsWebRuntimeOpts): DesktopApi {
   const { config } = opts
+  const postSdkEvent =
+    opts.postSdkEvent ??
+    ((name: string, data?: unknown) => {
+      window.parent?.postMessage({ type: 'event', name, data }, '*')
+    })
 
   const lang = (config.editorConfig?.lang as Lang | undefined) ?? 'en'
   const theme = ((config.editorConfig as { customization?: { uiTheme?: UiTheme } })
     ?.customization?.uiTheme ?? 'light') as UiTheme
+  const aiSettings: AiSettings = {
+    provider: (config.editorConfig?.customization?.ai?.model as AiSettings['provider']) ?? 'claude',
+  } as AiSettings
 
   const noop = () => {}
 
@@ -59,7 +72,10 @@ export function createSheetsApi(opts: SheetsWebRuntimeOpts): DesktopApi {
       return false
     },
     async hasQueuedWorkbook() {
-      return false
+      // The web analog of the shell-queued open: the signed config's
+      // document.url is the workbook to pull at boot (App calls
+      // selectWorkbook() when this resolves true).
+      return !!config.document?.url
     },
 
     // --- xlsx engine: OPEN + VIEW wired (Phase 1); recalc/save/etc. still stubbed ---
@@ -72,10 +88,23 @@ export function createSheetsApi(opts: SheetsWebRuntimeOpts): DesktopApi {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ config: sanitizeConfigForFetch(config) }),
         })
-        if (!res.ok) return null
+        if (!res.ok) {
+          postSdkEvent('onError', {
+            errorCode: res.status,
+            errorDescription: `fetch-document ${res.status}`,
+          })
+          return null
+        }
         const bytes = await res.arrayBuffer()
-        return await openWorkbook(bytes, config.document?.title ?? 'workbook.xlsx')
-      } catch {
+        const workbook = await openWorkbook(bytes, config.document?.title ?? 'workbook.xlsx')
+        postSdkEvent('onDocumentReady')
+        postSdkEvent('onDocumentStateChange', false)
+        return workbook
+      } catch (e) {
+        postSdkEvent('onError', {
+          errorCode: -1,
+          errorDescription: (e as Error).message,
+        })
         return null
       }
     },
@@ -119,12 +148,25 @@ export function createSheetsApi(opts: SheetsWebRuntimeOpts): DesktopApi {
       // No engine session to tear down in Phase 1; resolve cleanly.
     },
 
-    // --- AI panel: stubbed (mirror of docs-api.ts to follow) ---
-    async getAiSettings() {
-      return unsupported('getAiSettings')
+    // --- AI panel: boot-safe defaults (mirror of docs-api.ts). The sheets
+    // renderer reads settings/account status during boot, so these must
+    // resolve rather than throw; interactive AI calls still fail loudly. ---
+    async getAiSettings(): Promise<AiSettings> {
+      try {
+        const res = await fetch('/ai/settings')
+        if (res.ok) {
+          const body = (await res.json()) as { configured: boolean; provider: string | null }
+          if (body.provider) {
+            return { provider: body.provider } as unknown as AiSettings
+          }
+        }
+      } catch {
+        /* fall through to default */
+      }
+      return aiSettings
     },
     async setAiSettings() {
-      return unsupported('setAiSettings')
+      /* settings are operator-configured via PRISMOFFICE_GSK_KEY */
     },
     async aiChat() {
       return unsupported('aiChat')
@@ -135,11 +177,20 @@ export function createSheetsApi(opts: SheetsWebRuntimeOpts): DesktopApi {
     async aiStreamCancel() {
       return unsupported('aiStreamCancel')
     },
-    async aiGskStatus() {
-      return unsupported('aiGskStatus')
+    async aiGskStatus(): Promise<GenSparkAccountStatus> {
+      try {
+        const res = await fetch('/ai/settings')
+        if (res.ok) {
+          const body = (await res.json()) as { configured: boolean }
+          return { loggedIn: body.configured, email: undefined } as unknown as GenSparkAccountStatus
+        }
+      } catch {
+        /* fall through */
+      }
+      return { loggedIn: false, email: undefined } as unknown as GenSparkAccountStatus
     },
     async aiGskLogin() {
-      return unsupported('aiGskLogin')
+      /* Web auth flow not wired in v1 — operator configures PRISMOFFICE_GSK_KEY */
     },
     async webSearch() {
       return unsupported('webSearch')
