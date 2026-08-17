@@ -83,6 +83,9 @@ export function createDesktopApi(opts: WebRuntimeOpts): DesktopApi {
     onThemeChanged() {
       return () => {}
     },
+    onChromePressed() {
+      return () => {}
+    },
     async fontMetrics(_family: string) {
       return null
     },

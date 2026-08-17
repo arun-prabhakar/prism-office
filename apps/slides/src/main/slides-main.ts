@@ -1,5 +1,5 @@
 /**
- * GenOffice Slides main process — pptx parsing/render-tree building/edit application/saving all live
+ * PrismOffice Slides main process — pptx parsing/render-tree building/edit application/saving all live
  * here (Node side). The renderer only gets plain-data RenderSlide; edit intents are sent back
  * here to apply. Structure mirrors apps/docs: exports embeddable configure/register/start for
  * future shell reuse.
@@ -24,7 +24,7 @@ import { createHash, randomUUID } from 'node:crypto'
 import { existsSync, mkdirSync } from 'node:fs'
 import { userInfo } from 'node:os'
 import { dirname, join } from 'node:path'
-import { gskApiKey, gskSlideGenerate, setGskProxyUrl } from '@genoffice/ai-search'
+import { gskApiKey, gskSlideGenerate, setGskProxyUrl } from '@prismoffice/ai-search'
 import {
   appMenuLabels,
   configuredDefaultSaveDir,
@@ -35,9 +35,9 @@ import {
   showOpenDialogWithMemory,
   showSaveDialogWithMemory,
   toggleDevToolsItem,
-} from '@genoffice/electron-utils'
-import { getUiLang, normalizeLang, setUiLang } from '@genoffice/i18n'
-import { ProjectStore } from '@genoffice/project-store'
+} from '@prismoffice/electron-utils'
+import { getUiLang, normalizeLang, setUiLang } from '@prismoffice/i18n'
+import { ProjectStore } from '@prismoffice/project-store'
 import {
   addChart,
   addElement,
@@ -153,8 +153,8 @@ import {
   type Paragraph,
   type Slide,
   type TextElement,
-} from '@genoffice/pptx-engine'
-import { buildRenderSlide, EMU_PER_PX_96, type RenderSlide } from '@genoffice/pptx-render'
+} from '@prismoffice/pptx-engine'
+import { buildRenderSlide, EMU_PER_PX_96, type RenderSlide } from '@prismoffice/pptx-render'
 import { refineComplexWidths, shapedMetricsReady } from './shaped-metrics'
 import { applyEditParagraphs, collectParagraphFormatPatches, levelsChanged } from './edit-text'
 import { cfbKind, isCfbHeader } from './cfb-sniff'
@@ -476,7 +476,7 @@ const AUTOSAVE_BACKOFF_TICKS = 10
 let autosaveRunning = false
 
 /**
- * Recovery drafts for never-saved decks (wcId → visible path in <Documents>/GenOffice):
+ * Recovery drafts for never-saved decks (wcId → visible path in <Documents>/PrismOffice):
  * the sha1-keyed recovery copy needs session.path, so before the first save a freeze or
  * crash used to lose everything. Removed on save, explicit discard, or clean close.
  */
@@ -703,7 +703,7 @@ async function openAndBuild(
   }
 }
 
-/** Directory where AI-generated drafts are saved: the configurable default save folder (falls back to <Documents>/GenOffice) */
+/** Directory where AI-generated drafts are saved: the configurable default save folder (falls back to <Documents>/PrismOffice) */
 function getDraftsDir(): string {
   return configuredDefaultSaveDir(app)
 }
@@ -746,7 +746,7 @@ function pickDraftPath(draftsDir: string, deckName?: string): string {
 }
 
 /**
- * Auto-save the draft to <Documents>/GenOffice/<name>.pptx after AI generation completes.
+ * Auto-save the draft to <Documents>/PrismOffice/<name>.pptx after AI generation completes.
  * Append mode reuses the session's existing draft path (overwrite); replace mode generates a
  * new filename. On successful write, update session.path, pushRecent, slidesOpenedHook.
  * On write failure, degrade silently (console.warn) without blocking the in-memory session.
@@ -3899,7 +3899,7 @@ export function createSlidesWindow(openPath?: string | null): BrowserWindow {
   const win = new BrowserWindow({
     width: 1280,
     height: 840,
-    title: 'GenOffice Slides',
+    title: 'PrismOffice Slides',
     ...(process.platform === 'darwin'
       ? { titleBarStyle: 'hiddenInset' as const }
       : {

@@ -1,11 +1,11 @@
 {
-  "name": "@genoffice/shell",
-  "productName": "GenOffice",
+  "name": "@prismoffice/shell",
+  "productName": "PrismOffice",
   "version": "0.7.0",
   "license": "Apache-2.0",
   "homepage": "https://github.com/genspark-ai/genoffice",
   "private": true,
-  "description": "Unified GenOffice shell: one app hosting the docs and sheets modules behind a home/launcher window",
+  "description": "Unified PrismOffice shell: one app hosting the docs and sheets modules behind a home/launcher window",
   "main": "out/main/index.js",
   "desktopName": "genoffice.desktop",
   "scripts": {
@@ -19,18 +19,18 @@
     "dist:linux": "electron-vite build && electron-builder --linux"
   },
   "devDependencies": {
-    "@genoffice/agent-core": "*",
-    "@genoffice/ai-provider": "*",
-    "@genoffice/ai-search": "*",
-    "@genoffice/docs": "*",
-    "@genoffice/docx-engine": "*",
-    "@genoffice/electron-utils": "*",
-    "@genoffice/i18n": "*",
-    "@genoffice/pptx-engine": "*",
-    "@genoffice/pptx-render": "*",
-    "@genoffice/sheets": "*",
-    "@genoffice/slides": "*",
-    "@genoffice/ui": "*",
+    "@prismoffice/agent-core": "*",
+    "@prismoffice/ai-provider": "*",
+    "@prismoffice/ai-search": "*",
+    "@prismoffice/docs": "*",
+    "@prismoffice/docx-engine": "*",
+    "@prismoffice/electron-utils": "*",
+    "@prismoffice/i18n": "*",
+    "@prismoffice/pptx-engine": "*",
+    "@prismoffice/pptx-render": "*",
+    "@prismoffice/sheets": "*",
+    "@prismoffice/slides": "*",
+    "@prismoffice/ui": "*",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.0.4",
@@ -44,5 +44,5 @@
     "vite": "^7.3.1",
     "vitest": "^4.1.10"
   },
-  "author": "GenOffice"
+  "author": "PrismOffice"
 }

@@ -24,7 +24,7 @@ const updateUrl = process.env.GENOFFICE_UPDATE_URL
 // arm64. Off by default: Intel packages must only ever ship signed with the
 // company certificate (planned dual-track pipeline), so the current release
 // pipeline stays arm64-only and never produces a personally-signed Intel
-// artifact. The downstream layout (feed archive name, GenOffice-intel.dmg
+// artifact. The downstream layout (feed archive name, PrismOffice-intel.dmg
 // alias) keys off which dmgs exist, so flipping this flag is the single
 // switch.
 const includeMacX64 = process.env.GENOFFICE_MAC_X64 === '1'
@@ -72,7 +72,7 @@ function assertUniversalSidecar() {
   const sidecar = join(__dirname, '../sheets/native/xlsx-engine/target/release/xlsx-sidecar')
   if (!existsSync(sidecar)) {
     throw new Error(
-      `mac extraResources source missing: ${sidecar} (run "npm run native:build:universal -w @genoffice/sheets" first)`,
+      `mac extraResources source missing: ${sidecar} (run "npm run native:build:universal -w @prismoffice/sheets" first)`,
     )
   }
   const archs = execFileSync('lipo', ['-archs', sidecar], { encoding: 'utf8' }).trim().split(/\s+/)
@@ -80,7 +80,7 @@ function assertUniversalSidecar() {
     if (!archs.includes(want)) {
       throw new Error(
         `xlsx-sidecar is [${archs.join(', ')}] but both mac arch packages ship it — ` +
-          'run "npm run native:build:universal -w @genoffice/sheets" before packaging mac',
+          'run "npm run native:build:universal -w @prismoffice/sheets" before packaging mac',
       )
     }
   }
@@ -105,7 +105,7 @@ function assertModuleTreesPresent() {
 /** @type {import('electron-builder').Configuration} */
 const config = {
   appId: 'com.genoffice.app',
-  productName: 'GenOffice',
+  productName: 'PrismOffice',
   // Resolved from the installed electron package so dependency bumps can
   // never leave a stale hard-coded pin behind (packaging would silently ship
   // the old runtime).
@@ -224,8 +224,8 @@ const config = {
     // Two separate arch packages (NOT universal): arm64 keeps the exact
     // artifact names and update-feed entries it always had, x64 (opt-in via
     // GENOFFICE_MAC_X64=1, see includeMacX64 above) adds Intel support with
-    // electron-builder's default arch-less names (GenOffice-<v>.dmg /
-    // GenOffice-<v>-mac.zip). Both zips land in one latest-mac.yml and
+    // electron-builder's default arch-less names (PrismOffice-<v>.dmg /
+    // PrismOffice-<v>-mac.zip). Both zips land in one latest-mac.yml and
     // electron-updater picks by process.arch. Dual-arch packs ship the same
     // lipo fat xlsx-sidecar (see assertUniversalSidecar above).
     target: [
@@ -269,7 +269,7 @@ const config = {
     // AppImage (self-contained, any distro) + deb (apt install, pulls in the
     // GTK/NSS runtime deps) + rpm (dnf/zypper install on Fedora / RHEL /
     // openSUSE). Default artifact names are kept on purpose —
-    // GenOffice-<v>.AppImage / genoffice_<v>_amd64.deb — because the public
+    // PrismOffice-<v>.AppImage / genoffice_<v>_amd64.deb — because the public
     // README download links and the already-published linux-v0.5.149 release
     // use them.
     target: [
@@ -291,7 +291,7 @@ const config = {
     // (genspark-ai/genoffice#90). The set ships every standard raster size.
     icon: 'build/icons',
     // mac and win name the binary from productName; linux instead derives it
-    // from package.json "name", and "@genoffice/shell" sanitizes to the
+    // from package.json "name", and "@prismoffice/shell" sanitizes to the
     // invalid "@genofficeshell". Setting it explicitly also makes the
     // generated genoffice.desktop match the WM_CLASS Electron reports (it
     // takes that from the executable basename), so the running window links
@@ -300,7 +300,7 @@ const config = {
     // Electron takes its X11 app_id from package.json "desktopName"
     // (genoffice.desktop); syncDesktopName makes electron-builder name the
     // .desktop file and its StartupWMClass from the same value. Without it
-    // StartupWMClass falls back to productName ("GenOffice"), which does not
+    // StartupWMClass falls back to productName ("PrismOffice"), which does not
     // match the "genoffice" WM_CLASS the window actually reports — and X11
     // compares case-sensitively, so the taskbar shows an unlinked window.
     syncDesktopName: true,
@@ -311,19 +311,19 @@ const config = {
       },
     ],
   },
-  // Same "@genoffice/shell" problem as executableName above: the default deb
+  // Same "@prismoffice/shell" problem as executableName above: the default deb
   // artifact name derives from package.json "name", and the scope's "/" makes
   // fpm treat "@genoffice" as a directory. Spell the published name out
   // (genoffice_<version>_amd64.deb, matching the linux-v0.5.149 release).
   // packageName pins the control Package field to the same value the 0.5.149
   // deb shipped with — apt treats a different Package name as an unrelated
   // install, breaking upgrades. Without it, fpm receives productName
-  // "GenOffice" and only happens to downcase it to the right value.
+  // "PrismOffice" and only happens to downcase it to the right value.
   deb: {
     artifactName: 'genoffice_${version}_${arch}.deb',
     packageName: 'genoffice',
   },
-  // Same "@genoffice/shell" naming problem as deb: spell the artifact name
+  // Same "@prismoffice/shell" naming problem as deb: spell the artifact name
   // out (${arch} expands to the rpm arch string, x86_64) and pin the rpm
   // Package name so dnf/zypper treat successive releases as upgrades of the
   // same package. Like deb, rpm installs run no in-app updater — users

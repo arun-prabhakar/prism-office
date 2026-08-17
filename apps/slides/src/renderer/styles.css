@@ -54,7 +54,7 @@
 
 /* Per-app accent (powerpoint-orange family) + slides-only tokens.
  * Chrome tokens (surface/text/border/…, AI panel --color-*) come from
- * @genoffice/ui/tokens.css; nothing here may shadow those names. */
+ * @prismoffice/ui/tokens.css; nothing here may shadow those names. */
 :root {
   --accent: #c43e1c;
   --accent-dark: #a33517;
@@ -3462,7 +3462,7 @@ body.vib .slide-list {
   border-radius: 1px;
 }
 
-/* Anchor positioning for the shared Word-style color panel (@genoffice/ui
+/* Anchor positioning for the shared Word-style color panel (@prismoffice/ui
    .gcp-palette draws the chrome; this wrapper only places it under the trigger). */
 .rb-color-pop {
   position: fixed;

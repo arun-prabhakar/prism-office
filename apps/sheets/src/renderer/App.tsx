@@ -108,8 +108,8 @@ import {
   COMPLETED_VIA_TOOLS_TEXT,
   composeSkills,
   type AgentImage,
-} from '@genoffice/agent-core'
-import type { AiSettings } from '@genoffice/ai-provider'
+} from '@prismoffice/agent-core'
+import type { AiSettings } from '@prismoffice/ai-provider'
 import { type WorkbookOperation } from '../domain/workbook-dsl'
 import {
   columnIndex,

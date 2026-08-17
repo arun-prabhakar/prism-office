@@ -11,9 +11,9 @@ import {
   installNavigationGuard,
   safeExternalUrl,
   showOpenDialogWithMemory,
-} from '@genoffice/electron-utils'
-import { createI18n, getUiLang } from '@genoffice/i18n'
-import { gskGenerateImage, hasGskAuth } from '@genoffice/ai-search'
+} from '@prismoffice/electron-utils'
+import { createI18n, getUiLang } from '@prismoffice/i18n'
+import { gskGenerateImage, hasGskAuth } from '@prismoffice/ai-search'
 import { PDF_CHANNELS } from '../shared/ipc'
 import type {
   ExportImagesRequest,
@@ -415,7 +415,7 @@ interface RuntimePaths {
   preloadPath: string
   rendererUrl?: string
   rendererFile?: string
-  /** Shell router used to open generated PDFs in a new GenOffice tab. */
+  /** Shell router used to open generated PDFs in a new PrismOffice tab. */
   openGeneratedPath?: (path: string) => boolean
 }
 
@@ -1125,7 +1125,7 @@ export function createPdfView(openPath?: string | null): WebContentsView {
   return view
 }
 
-/** Standalone window mode: `npm run dev -w @genoffice/pdf`, pdf path passed via argv */
+/** Standalone window mode: `npm run dev -w @prismoffice/pdf`, pdf path passed via argv */
 export function startPdfStandalone(): void {
   installNavigationGuard(app)
   installContextMenu(app, () => contextMenuLabels(getUiLang()))

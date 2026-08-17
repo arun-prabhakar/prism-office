@@ -1,6 +1,6 @@
 /* Per-app accent (excel-green family) + sheets-only tokens.
  * Chrome tokens (surface/text/border/…, AI panel --color-*) come from
- * @genoffice/ui/tokens.css; nothing here may shadow those names. */
+ * @prismoffice/ui/tokens.css; nothing here may shadow those names. */
 :root {
   --excel-green: #217346;
   --excel-green-dark: #185c37;
@@ -1192,7 +1192,7 @@ html.genoffice-popover-open .ribbon-tabs {
   anchor-scope: --menu-select;
 }
 
-/* Anchor positioning for the shared Word-style color panel (@genoffice/ui
+/* Anchor positioning for the shared Word-style color panel (@prismoffice/ui
    .gcp-palette draws the chrome; this only places it under its trigger). */
 .sheets-color-pop {
   position: fixed;
