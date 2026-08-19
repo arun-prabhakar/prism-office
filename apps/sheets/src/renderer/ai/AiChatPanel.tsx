@@ -388,6 +388,7 @@ export function AiChatPanel({
   }
 
   if (!isOpen) {
+    if (window.__prismofficeWeb === true) return null
     return (
       <aside className="copilot collapsed">
         <button

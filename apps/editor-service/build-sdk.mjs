@@ -1,5 +1,5 @@
 // Bundle the SDK into a single IIFE file at static/sdk/prismoffice.js so the
-// editor service can serve it at /sdk/prismoffice.js (matches the ONLYOFFICE
+// editor service can serve it at /sdk/prismoffice.js
 // pattern: <script src="https://EDITOR_SERVICE_URL/sdk/prismoffice.js">).
 //
 // Output is a single file with no imports — safe to drop into any host page.

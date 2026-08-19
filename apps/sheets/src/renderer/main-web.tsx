@@ -41,6 +41,8 @@ window.addEventListener('message', async (event: MessageEvent) => {
   // env.d.ts declares `readonly desktopApi`; Object.assign respects the
   // runtime bridge contract without fighting the readonly type.
   Object.assign(window, { desktopApi: createSheetsApi({ config }) })
+  // Web-port marker read by the renderer to hide desktop-only chrome (AI dock).
+  ;(window as Record<string, unknown>).__prismofficeWeb = true
   // Dynamically import so window.desktopApi is set BEFORE the renderer boots.
   await import('./main')
 })

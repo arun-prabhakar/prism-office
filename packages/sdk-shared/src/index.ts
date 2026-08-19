@@ -3,9 +3,6 @@
  *
  * The PrismOffice editor SDK, served to integrators at `/sdk/prismoffice.js`.
  *
- * Shape mirrors ONLYOFFICE's DocsAPI.DocEditor so integrators familiar with
- * that ecosystem can adopt ours with minimal relearning.
- *
  *     <script src="https://EDITOR_SERVICE_URL/sdk/prismoffice.js"></script>
  *     <script>
  *       const editor = new PrismOfficeAPI.DocEditor("placeholder", {
@@ -63,10 +60,9 @@ export class DocEditor {
     this.placeholderId = placeholderId
     this.config = config
 
-    // Required-parameter validation (matches ONLYOFFICE's _checkConfigParams).
+    // Required-parameter validation.
     const errors = validateConfig(config)
     if (errors.length > 0) {
-      // ONLYOFFICE uses window.alert; we do the same for parity.
       const msg = `PrismOffice DocEditor: invalid config — ${errors.join('; ')}`
       if (typeof window !== 'undefined' && typeof window.alert === 'function') {
         window.alert(msg)
@@ -89,7 +85,7 @@ export class DocEditor {
   }
 
   // -----------------------------------------------------------------------
-  // Public methods (paired with the request-events; mirror ONLYOFFICE).
+  // Public methods (paired with the request-events).
   // -----------------------------------------------------------------------
 
   /** Tear down: remove iframe, remove listener, reject pending calls. */
@@ -143,7 +139,7 @@ export class DocEditor {
     return this.callMethod('refreshFile', [file])
   }
 
-  /** Programmatically request the host re-init in edit mode (matches ONLYOFFICE). */
+  /** Programmatically request the host re-init in edit mode. */
   requestEditRights(): void {
     this.config.events?.onRequestEditRights?.call(this)
   }
@@ -170,7 +166,7 @@ export class DocEditor {
         config: sanitizeConfigForClone(this.config),
       })
       // The iframe's `app-ready` handshake doubles as the onAppReady event
-      // surface (matches ONLYOFFICE — app loaded into the browser).
+      // surface.
       const onAppReady = this.config.events?.onAppReady as
         | (() => void)
         | undefined
@@ -181,8 +177,8 @@ export class DocEditor {
     if (msg.type === 'event') {
       // Indexing EditorEvents by keyof returns a union of distinct function
       // signatures that TS can't unify into one callable shape. Treat the
-      // resolved handler as a generic (event) => void — same call convention
-      // ONLYOFFICE uses (`handler.call(editor, {target, data})`).
+      // resolved handler as a generic (event) => void — call convention:
+      // handler.call(editor, {target, data}).
       const handler = this.config.events?.[msg.name] as
         | ((event: { target: DocEditor; data: unknown }) => void)
         | undefined
@@ -314,7 +310,7 @@ function resolveEditorOrigin(): string {
 }
 
 // ---------------------------------------------------------------------------
-// Global registration (matches ONLYOFFICE's `DocsAPI` global)
+// Global registration
 // ---------------------------------------------------------------------------
 
 declare global {

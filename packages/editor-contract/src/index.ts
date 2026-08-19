@@ -1,12 +1,8 @@
 /**
  * @prismoffice/editor-contract
  *
- * Typed contract for the PrismOffice embeddable editor. Mirrors the ONLYOFFICE
- * Docs API shape (config / events / callback handler / JWT) so integrators
- * familiar with ONLYOFFICE can adopt ours with minimal relearning.
- *
- * Source of truth for the contract shape:
- *   .omo/plans/reference-onlyoffice-api.md
+ * Typed contract for the PrismOffice embeddable editor (config / events /
+ * callback handler / JWT).
  *
  * v1 subset: collaboration-related fields and events are intentionally
  * omitted. Adding them in v2 does not change the existing fields.
@@ -27,10 +23,9 @@ export type EditorType = 'desktop' | 'mobile' | 'embedded'
 // ---------------------------------------------------------------------------
 
 /**
- * v1 permission set. Subset of ONLYOFFICE's; adds `aiEdit` (PrismOffice-specific
- * — gates the AI panel).
+ * v1 permission set. Adds `aiEdit` (PrismOffice-specific — gates the AI panel).
  *
- * Defaults follow ONLYOFFICE: `edit/review/comment/fillForms` default true;
+ * Defaults: `edit/review/comment/fillForms` default true;
  * `download/print/copy` default true.
  */
 export interface Permissions {
@@ -68,7 +63,7 @@ export interface DocumentInfo {
 /**
  * The `document` block of the editor config.
  *
- * `key` rules (matches ONLYOFFICE):
+ * `key` rules:
  *   - Generate a new key on every save (after status-2 with `{"error":0}`).
  *   - Charset `0-9 a-z A-Z - _ . =`, max 128 chars.
  *   - Globally unique across all integrators sharing an editor service.
@@ -86,7 +81,7 @@ export interface DocumentConfig {
    * need to configure CORS for the editor origin.
    */
   url: string
-  /** Permission flags. Omitted fields take ONLYOFFICE defaults. */
+  /** Permission flags. Omitted fields take defaults. */
   permissions?: Permissions
   /** Display-only metadata. */
   info?: DocumentInfo
@@ -104,7 +99,7 @@ export interface EditorUser {
   image?: string
 }
 
-/** Branding / behavior toggles. v1 subset of ONLYOFFICE's `customization`. */
+/** Branding / behavior toggles. */
 export interface Customization {
   autosave?: boolean
   forcesave?: boolean
@@ -150,7 +145,7 @@ export interface EditorConfig {
  * v1 event subset. Each handler is invoked as `handler.call(editor, event)`
  * where `event` is `{ target: DocEditor, data: T }`.
  *
- * Two families (matches ONLYOFFICE):
+ * Two families:
  *   - Notifications: one-way (`onAppReady`, `onDocumentReady`, `onError`).
  *   - Requests: paired with a method call on the editor (`onRequestHistory`
  *     → `editor.refreshHistory(...)`, etc.). The SDK hides request/method
@@ -227,7 +222,7 @@ export interface EditorConfigRoot {
 // ---------------------------------------------------------------------------
 
 /**
- * Save/status enum. Matches ONLYOFFICE.
+ * Save/status enum.
  *
  * v1 subset actually fired: 2, 3, 4, 6, 7 (no status 1 — that's collab-only).
  */
@@ -246,7 +241,7 @@ export enum CallbackStatus {
   ForceSaveError = 7,
 }
 
-/** Forcesave trigger (only present when status is 6 or 7). Matches ONLYOFFICE. */
+/** Forcesave trigger (only present when status is 6 or 7). */
 export type ForceSaveType = 0 | 1 | 2 | 3
 
 /**

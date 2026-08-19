@@ -2,7 +2,7 @@
 
 > **Version:** 1.0.0  
 > **License:** Apache-2.0  
-> **Shape:** Mirrors ONLYOFFICE Docs API for familiarity. Diverges where PrismOffice's byte-preserving docx round-trip and pdfium-based PDF editing require it.
+> **Shape:** Designed for familiarity with common embeddable editor APIs. Diverges where PrismOffice's byte-preserving docx round-trip and pdfium-based PDF editing require it.
 
 ## Quick Start
 

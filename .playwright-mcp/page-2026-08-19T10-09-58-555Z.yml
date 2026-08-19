@@ -1,0 +1,7 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - heading "PrismOffice Reference Host — sheets" [level=1] [ref=e3]
+  - main [ref=e4]:
+    - iframe [ref=e5]:
+      
+    - generic [ref=e6]: "events will appear here SDK loaded: PrismOfficeAPI = object instantiating DocEditor (editor origin http://localhost:3000) event: onAppReady"

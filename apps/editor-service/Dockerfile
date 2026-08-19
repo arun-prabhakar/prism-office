@@ -1,6 +1,6 @@
 # PrismOffice editor service container image.
 #
-# Self-hosted by customers (matches ONLYOFFICE Docs deployment shape).
+# Self-hosted by customers.
 # Single Node process — horizontally scalable behind a sticky-session LB if
 # real-time collaboration is ever added (v2); for v1 (no collab) any number
 # of replicas works.

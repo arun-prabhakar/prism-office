@@ -322,7 +322,7 @@ export function ExcelShell({
 }: ExcelShellProps): React.JSX.Element {
   const { t } = useI18n()
   const [activeTab, setActiveTab] = useState<RibbonTab>('Home')
-  const [isCopilotOpen, setIsCopilotOpen] = useState(true)
+  const [isCopilotOpen, setIsCopilotOpen] = useState(window.__prismofficeWeb !== true)
   const [showFormatCells, setShowFormatCells] = useState(false)
   const [axisSizeTarget, setAxisSizeTarget] = useState<'row' | 'col' | null>(null)
   const [showLinkDialog, setShowLinkDialog] = useState(false)
@@ -429,9 +429,6 @@ export function ExcelShell({
             </button>
           ))}
           <span className="ribbon-tabs-spacer" />
-          <span className="workbook-status" role="status" aria-live="polite">
-            {statusMessage}
-          </span>
         </nav>
 
         <Ribbon
@@ -2343,6 +2340,7 @@ function Ribbon({
     : [...fontSizes, echoSize].sort((a, b) => a - b)
   return (
     <div className="ribbon">
+      {window.__prismofficeWeb !== true && (
       <RibbonGroup label={t('appGroupAiAssistant')}>
         <button
           className={`ribbon-tool as-button large ai-entry ${aiOpen ? 'active' : ''}`}
@@ -2414,6 +2412,7 @@ function Ribbon({
           </span>
         </button>
       </RibbonGroup>
+      )}
       <RibbonGroup label={t('appGroupClipboard')}>
         <button
           className="ribbon-tool as-button large"

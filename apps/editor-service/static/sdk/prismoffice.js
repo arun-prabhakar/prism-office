@@ -117,7 +117,7 @@
       window.addEventListener("message", this.messageListener);
     }
     // -----------------------------------------------------------------------
-    // Public methods (paired with the request-events; mirror ONLYOFFICE).
+    // Public methods (paired with the request-events).
     // -----------------------------------------------------------------------
     /** Tear down: remove iframe, remove listener, reject pending calls. */
     destroyEditor() {
@@ -157,7 +157,7 @@
     refreshFile(file) {
       return this.callMethod("refreshFile", [file]);
     }
-    /** Programmatically request the host re-init in edit mode (matches ONLYOFFICE). */
+    /** Programmatically request the host re-init in edit mode. */
     requestEditRights() {
       this.config.events?.onRequestEditRights?.call(this);
     }

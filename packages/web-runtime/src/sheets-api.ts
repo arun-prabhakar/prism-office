@@ -18,7 +18,7 @@
 import type { DesktopApi, UiTheme } from '@prismoffice/sheets/shared/desktop-api'
 import type { AiSettings, GenSparkAccountStatus } from '@prismoffice/ai-provider'
 import type { EditorConfigRoot } from '@prismoffice/editor-contract'
-import { openWorkbook, readRange, sanitizeConfigForFetch } from './sheets-xlsx'
+import { buildWorkbookBytes, openWorkbook, readRange, sanitizeConfigForFetch, swapSession } from './sheets-xlsx'
 
 type Lang = 'zh' | 'en' | 'ja' | 'ko' | 'fr' | 'de' | 'es' | 'th' | 'id' | 'ru' | 'ar'
 
@@ -132,14 +132,40 @@ export function createSheetsApi(opts: SheetsWebRuntimeOpts): DesktopApi {
     async captureScreenSource() {
       return unsupported('captureScreenSource')
     },
-    async saveWorkbookEdits() {
-      return unsupported('saveWorkbookEdits')
+    async saveWorkbookEdits(request) {
+      // Serialize first; buildWorkbookBytes throws atomically on unsupported
+      // ops and never mutates the live session.
+      const bytes = buildWorkbookBytes(request)
+      postSdkEvent('onDocumentStateChange', true)
+      try {
+        const res = await fetch('/save-document', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            config: sanitizeConfigForFetch(config),
+            bytes: bytesToBase64(new Uint8Array(bytes)),
+            filetype: 'xlsx',
+          }),
+        })
+        if (!res.ok) {
+          const body = await res.json().catch(() => ({ error: 'unknown' }))
+          throw new Error(body.error ?? `save-document ${res.status}`)
+        }
+      } catch (e) {
+        // Session untouched — the renderer keeps its journal and can retry.
+        throw e instanceof Error ? e : new Error(String(e))
+      }
+      postSdkEvent('onDocumentStateChange', false)
+      const file = await swapSession(request.sessionId, bytes)
+      return { canceled: false as const, file, touchedEntries: [] }
     },
     async writeWorkbookRecovery() {
-      return unsupported('writeWorkbookRecovery')
+      // Crash recovery is best-effort by contract; the in-memory session IS
+      // the recovery copy until the bytes are persisted on save.
+      return { ok: true }
     },
     async autoRenameWorkbook() {
-      return unsupported('autoRenameWorkbook')
+      return { renamed: false }
     },
     async exportPdf() {
       return unsupported('exportPdf')
@@ -261,4 +287,13 @@ export function createSheetsApi(opts: SheetsWebRuntimeOpts): DesktopApi {
       /* no-op */
     },
   }
+}
+
+function bytesToBase64(bytes: Uint8Array): string {
+  let bin = ''
+  const chunk = 0x8000
+  for (let i = 0; i < bytes.length; i += chunk) {
+    bin += String.fromCharCode(...bytes.subarray(i, i + chunk))
+  }
+  return btoa(bin)
 }

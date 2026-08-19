@@ -10,7 +10,7 @@
  *   POST /save-document           — iframe → server uploads new bytes
  *   GET  /saved/:id               — host fetches uploaded bytes (short TTL)
  *
- * Auth model (matches ONLYOFFICE's three-secret pattern, v1 uses two):
+ * Auth model (two-secret pattern):
  *   - iframe POSTs the SDK config (with its HS256 token) to /fetch-document
  *     and /save-document. Server validates the token with the browser secret.
  *   - When the server fetches the host's document.url and posts callbacks

@@ -1,0 +1,166 @@
+- generic [ref=e1]:
+  - banner [ref=e2]:
+    - heading "PrismOffice Reference Host — sheets" [level=1] [ref=e3]
+  - main [ref=e4]:
+    - iframe [active] [ref=e5]:
+      - generic [ref=f1e1]:
+        - main [ref=f1e3]:
+          - generic [ref=f1e4]:
+            - navigation "Workbook commands" [ref=f1e5]:
+              - button "Save (Ctrl+S)" [disabled] [ref=f1e6]
+              - button "Undo" [disabled] [ref=f1e11]
+              - button "Redo" [disabled] [ref=f1e15]
+              - generic [ref=f1e19] [cursor=pointer]: AutoSave
+              - button "Home" [ref=f1e23] [cursor=pointer]
+              - button "Insert" [ref=f1e24] [cursor=pointer]
+              - button "Page Layout" [ref=f1e25] [cursor=pointer]
+              - button "Formulas" [ref=f1e26] [cursor=pointer]
+              - button "Data" [ref=f1e27] [cursor=pointer]
+              - button "Review" [ref=f1e28] [cursor=pointer]
+              - button "View" [ref=f1e29] [cursor=pointer]
+              - status [ref=f1e30]: Workbook fully loaded — formulas recalculate live, rows/columns editable.
+            - generic [ref=f1e31]:
+              - region "Clipboard" [ref=f1e32]:
+                - generic [ref=f1e33]:
+                  - button [ref=f1e34] [cursor=pointer]:
+                    - strong [ref=f1e44]: Paste
+                  - generic [ref=f1e45]:
+                    - strong [ref=f1e55]: Paste Special
+                    - button "Paste Special" [ref=f1e57] [cursor=pointer]
+                  - generic [ref=f1e58]:
+                    - button "Cut Ctrl+X" [ref=f1e59] [cursor=pointer]
+                    - button "Copy Ctrl+C" [ref=f1e65] [cursor=pointer]
+                    - button "Format Painter" [ref=f1e70] [cursor=pointer]
+              - region "Font" [ref=f1e76]:
+                - generic [ref=f1e78]:
+                  - generic [ref=f1e79]:
+                    - generic [ref=f1e81]:
+                      - textbox "Font family" [ref=f1e82]: Aptos
+                      - button "Font family" [ref=f1e83] [cursor=pointer]
+                    - generic [ref=f1e87]:
+                      - textbox "Font size" [ref=f1e88]: "11"
+                      - button "Font size" [ref=f1e89] [cursor=pointer]
+                    - button "Increase font size" [ref=f1e92] [cursor=pointer]
+                    - button "Decrease font size" [ref=f1e97] [cursor=pointer]
+                  - generic [ref=f1e102]:
+                    - button "B" [ref=f1e103] [cursor=pointer]
+                    - button [ref=f1e105] [cursor=pointer]:
+                      - emphasis [ref=f1e106]: I
+                    - button "U" [ref=f1e107] [cursor=pointer]
+                    - button "D" [ref=f1e109] [cursor=pointer]
+                    - button "S" [ref=f1e111] [cursor=pointer]
+                    - button "Font color" [ref=f1e114] [cursor=pointer]:
+                      - generic [ref=f1e115]: A
+                    - button "Fill color" [ref=f1e118] [cursor=pointer]
+                    - button "Borders" [ref=f1e126] [cursor=pointer]
+                    - button "Border color" [ref=f1e135] [cursor=pointer]
+              - region "Alignment" [ref=f1e142]:
+                - generic [ref=f1e144]:
+                  - generic [ref=f1e145]:
+                    - button "Top align" [ref=f1e146] [cursor=pointer]
+                    - button "Middle align" [ref=f1e150] [cursor=pointer]
+                    - button "Bottom align" [ref=f1e154] [cursor=pointer]
+                    - button "Wrap text" [ref=f1e158] [cursor=pointer]
+                    - button "Orientation" [ref=f1e164] [cursor=pointer]:
+                      - img [ref=f1e167]:
+                        - generic [ref=f1e168]: ab
+                  - generic [ref=f1e173]:
+                    - button "Align left" [ref=f1e174] [cursor=pointer]
+                    - button "Align center" [ref=f1e178] [cursor=pointer]
+                    - button "Align right" [ref=f1e182] [cursor=pointer]
+                    - button "Merge cells" [ref=f1e187] [cursor=pointer]:
+                      - generic [ref=f1e188]: Merge
+              - region "Number" [ref=f1e195]:
+                - generic [ref=f1e197]:
+                  - button "Number format" [ref=f1e199] [cursor=pointer]:
+                    - generic [ref=f1e200]: General
+                  - generic [ref=f1e203]:
+                    - button "Currency" [ref=f1e204] [cursor=pointer]: $
+                    - button "Percent" [ref=f1e205] [cursor=pointer]: "%"
+                    - button "Thousands" [ref=f1e206] [cursor=pointer]: ","
+                    - button "Increase decimal" [ref=f1e207] [cursor=pointer]: .0+
+                    - button "Decrease decimal" [ref=f1e208] [cursor=pointer]: .0−
+              - region "Styles" [ref=f1e209]:
+                - generic [ref=f1e211]:
+                  - button "Conditional Formatting" [ref=f1e212] [cursor=pointer]
+                  - generic [ref=f1e219] [cursor=pointer]:
+                    - text: Format as Table
+                    - button "Format as Table" [ref=f1e227]
+                  - generic [ref=f1e228] [cursor=pointer]:
+                    - text: Cell Styles
+                    - button "Cell Styles" [ref=f1e238]
+              - region "Cells" [ref=f1e239]:
+                - generic [ref=f1e241]:
+                  - button "Format Cells Ctrl+1" [ref=f1e242] [cursor=pointer]
+                  - generic [ref=f1e251]:
+                    - button "Insert row" [ref=f1e252] [cursor=pointer]
+                    - button "Delete row" [ref=f1e256] [cursor=pointer]
+                    - button "Insert column" [ref=f1e260] [cursor=pointer]
+                    - button "Delete column" [ref=f1e264] [cursor=pointer]
+                    - button "Format" [ref=f1e269] [cursor=pointer]:
+                      - generic [ref=f1e270]:
+                        - generic [ref=f1e271]: ⇳
+                        - text: Format
+              - region "Editing" [ref=f1e274]:
+                - generic [ref=f1e276]:
+                  - generic [ref=f1e277]:
+                    - button "Fill" [ref=f1e279] [cursor=pointer]
+                    - button "Clear" [ref=f1e288] [cursor=pointer]
+                  - generic [ref=f1e296]:
+                    - button "Find" [ref=f1e297] [cursor=pointer]
+                    - button "Replace" [ref=f1e302] [cursor=pointer]
+                    - button "Go To" [ref=f1e307] [cursor=pointer]
+          - generic [ref=f1e312]:
+            - complementary [ref=f1e313]:
+              - button "Open AI assistant" [ref=f1e314] [cursor=pointer]
+            - generic [ref=f1e317]:
+              - generic [ref=f1e318]:
+                - textbox "Name Box" [ref=f1e319]:
+                  - /placeholder: A1
+                  - text: A1
+                - button "Go To" [ref=f1e320] [cursor=pointer]: ▾
+              - generic [ref=f1e322]:
+                - generic [ref=f1e324]:
+                  - generic [ref=f1e325]:
+                    - complementary
+                    - generic [ref=f1e328]:
+                      - generic [ref=f1e330]:
+                        - textbox [ref=f1e331]: A1
+                        - generic [ref=f1e332] [cursor=pointer]
+                      - generic [ref=f1e335]:
+                        - generic [ref=f1e344] [cursor=pointer]
+                        - generic [ref=f1e354] [cursor=pointer]
+                      - button [ref=f1e357] [cursor=pointer]
+                    - complementary:
+                      - complementary "Sidebar panel":
+                        - button "Close sidebar" [ref=f1e364] [cursor=pointer]
+                  - generic [ref=f1e369]:
+                    - generic [ref=f1e370]:
+                      - generic [ref=f1e371]:
+                        - button [ref=f1e372] [cursor=pointer]
+                        - button [ref=f1e374] [cursor=pointer]
+                      - tablist "Sheet tabs" [ref=f1e376]:
+                        - tab "Sheet1" [selected] [ref=f1e377] [cursor=pointer]
+                    - button [ref=f1e383] [cursor=pointer]
+                - generic:
+                  - region "Notifications alt+T"
+                  - region "Notifications alt+T"
+              - generic [ref=f1e388]:
+                - generic [ref=f1e389]: Workbook fully loaded — formulas recalculate live, rows/columns editable.
+                - generic [ref=f1e391]:
+                  - button "Zoom out" [ref=f1e392] [cursor=pointer]: −
+                  - slider [ref=f1e393]: "100"
+                  - button "Zoom in" [ref=f1e394] [cursor=pointer]: +
+                  - generic [ref=f1e395]: 100%
+        - generic [ref=f1e400]:
+          - button "Delete" [disabled] [ref=f1e402]
+          - button "Copy" [ref=f1e406] [cursor=pointer]
+          - button "Rename" [ref=f1e410] [cursor=pointer]
+          - button "Change color" [ref=f1e414] [cursor=pointer]
+          - button "Hide" [disabled] [ref=f1e420]
+          - button "Unhide" [disabled] [ref=f1e424]
+          - button "Protect Worksheet" [ref=f1e428] [cursor=pointer]
+          - button "Unprotect Worksheet" [disabled] [ref=f1e432]
+          - button "Change Worksheet Permissions" [disabled] [ref=f1e436]
+          - button "View All Protection Ranges" [ref=f1e440] [cursor=pointer]
+    - generic [ref=e6]: "events will appear here SDK loaded: PrismOfficeAPI = object instantiating DocEditor (editor origin http://localhost:3000) event: onAppReady event: onDocumentReady event: onDocumentStateChange dirty=false"

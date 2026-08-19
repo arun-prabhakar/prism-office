@@ -161,8 +161,8 @@ app.post('/upload', async (c) => {
   const file = body['file'] as File | undefined
   if (!file) return c.text('No file uploaded. Use multipart form-data with field "file".', 400)
   const ext = (file.name.split('.').pop() ?? '').toLowerCase()
-  const fileType = ext === 'pdf' ? 'pdf' : 'docx'
-  const type = ext === 'pdf' ? 'pdf' : 'word'
+  const fileType = ext === 'pdf' ? 'pdf' : ext === 'xlsx' || ext === 'xls' ? 'xlsx' : 'docx'
+  const type = ext === 'pdf' ? 'pdf' : ext === 'xlsx' || ext === 'xls' ? 'sheets' : 'word'
   const fileKey = 'upload-' + Date.now()
   const bytes = new Uint8Array(await file.arrayBuffer())
   files.set(fileKey, { name: file.name, filetype: fileType, bytes, versions: [bytes] })
@@ -174,7 +174,7 @@ app.get('/files/:id/edit', async (c) => {
   const fileId = c.req.param('id')
   const file = files.get(fileId)
   if (!file) return c.text('File not found', 404)
-  const type = file.filetype === 'pdf' ? 'pdf' : 'word'
+  const type = file.filetype === 'pdf' ? 'pdf' : file.filetype === 'xlsx' ? 'sheets' : 'word'
   const ho = hostOrigin(c)
   const token = await signConfig(
     {
@@ -488,7 +488,7 @@ function renderLandingPage(editorServiceOrigin: string): string {
     </div>
     <form class="upload" method="POST" action="/upload" enctype="multipart/form-data">
       <div><strong>Or upload your own file:</strong></div>
-      <input type="file" name="file" accept=".docx,.pdf" required />
+      <input type="file" name="file" accept=".docx,.pdf,.xlsx,.xls" required />
       <br/>
       <button type="submit">Open in Editor</button>
     </form>
