@@ -410,6 +410,84 @@ export function handleRibbonCommand(ctx: RibbonCommandContext, command: string):
       )
       return
     }
+    case 'auto-sum': {
+      const workbook = runtime.univerAPI.getActiveWorkbook()
+      if (!workbook || !worksheet) return
+      const selection = workbook.getActiveRange()
+      if (!selection) return
+      const range = selection.getRange()
+      const cellCount = (range.endRow - range.startRow + 1) * (range.endColumn - range.startColumn + 1)
+      // Whole-column-scale selections go to Univer's own quick-sum; its
+      // iteration cost matches whatever its native toolbar button pays.
+      if (cellCount > 100_000) {
+        void runtime.univerAPI.executeCommand('sheets-formula.command.quick-sum')
+        return
+      }
+      const hasValue = (row: number, column: number): boolean => {
+        const cell = worksheet.getRange(row, column)
+        const value = cell.getValue()
+        return (value !== null && value !== '') || cell.getFormula() !== ''
+      }
+      const sumInto = (row: number, column: number, ref: string): void => {
+        worksheet.getRange(row, column).setValue({ f: `=SUM(${ref})` })
+      }
+      const hasData = (() => {
+        const values = selection.getValues()
+        // Formula cells can carry no cached value on the web port, so the
+        // formula grid is consulted in parallel.
+        const formulas = selection.getFormulas()
+        return values.some((rowValues, r) =>
+          rowValues.some(
+            (value, c) =>
+              (value !== null && value !== '') || (formulas[r]?.[c] ?? '') !== '',
+          ),
+        )
+      })()
+      if (hasData) {
+        // Excel: each selection column gets its sum one row below; occupied
+        // target cells are skipped — AutoSum never overwrites content.
+        if (range.endRow + 1 >= worksheet.getMaxRows()) return
+        for (let column = range.startColumn; column <= range.endColumn; column++) {
+          if (hasValue(range.endRow + 1, column)) continue
+          sumInto(
+            range.endRow + 1,
+            column,
+            `${formatAddress(range.startRow, column)}:${formatAddress(range.endRow, column)}`,
+          )
+        }
+        return
+      }
+      // Empty selection: Excel sums the contiguous data above, per column.
+      let summed = false
+      for (let column = range.startColumn; column <= range.endColumn; column++) {
+        if (range.startRow === 0 || !hasValue(range.startRow - 1, column)) continue
+        let top = range.startRow - 1
+        while (top > 0 && hasValue(top - 1, column)) top--
+        sumInto(
+          range.startRow,
+          column,
+          `${formatAddress(top, column)}:${formatAddress(range.startRow - 1, column)}`,
+        )
+        summed = true
+      }
+      // Single empty cell with nothing above: sum the contiguous row to the left.
+      if (
+        !summed &&
+        range.startRow === range.endRow &&
+        range.startColumn === range.endColumn &&
+        range.startColumn > 0 &&
+        hasValue(range.startRow, range.startColumn - 1)
+      ) {
+        let left = range.startColumn - 1
+        while (left > 0 && hasValue(range.startRow, left - 1)) left--
+        sumInto(
+          range.startRow,
+          range.startColumn,
+          `${formatAddress(range.startRow, left)}:${formatAddress(range.startRow, range.startColumn - 1)}`,
+        )
+      }
+      return
+    }
     case 'fill-down':
     case 'fill-right':
       void runtime.univerAPI.executeCommand(

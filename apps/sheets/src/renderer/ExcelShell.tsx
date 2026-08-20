@@ -2854,6 +2854,13 @@ function Ribbon({
       <RibbonGroup label={t('appGroupEditing')}>
         <div className="ribbon-rows">
           <div className="inline-tools">
+            <button
+              className="labeled"
+              data-tip={t('appAutoSumTitle')}
+              onClick={() => onCommand('auto-sum')}
+            >
+              <ToolSymbol symbol="Σ" /> {t('appAutoSum')}
+            </button>
             <MenuSelect
               className="select-like compact"
               label="Fill"
