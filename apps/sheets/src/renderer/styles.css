@@ -1578,6 +1578,10 @@ select.select-like {
   grid-template-columns: 34px minmax(0, 1fr);
 }
 
+.app-shell.copilot-collapsed.no-copilot-rail .sheet-body {
+  grid-template-columns: 0 minmax(0, 1fr);
+}
+
 .spreadsheet {
   min-width: 0;
   min-height: 0;

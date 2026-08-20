@@ -370,7 +370,7 @@ export function ExcelShell({
     : ribbonTabs
 
   return (
-    <main className={`app-shell ${isCopilotOpen ? '' : 'copilot-collapsed'}`}>
+    <main className={`app-shell ${isCopilotOpen ? '' : 'copilot-collapsed'} ${!isCopilotOpen && window.__prismofficeWeb === true ? 'no-copilot-rail' : ''}`}>
       <header className="excel-header">
         <nav
           className={`ribbon-tabs ${IN_TAB ? '' : IS_MAC ? 'ribbon-tabs-mac' : 'ribbon-tabs-win'}`}
